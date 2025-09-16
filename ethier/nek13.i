@@ -18,14 +18,14 @@
 
 [Outputs]
   csv = true
-  #show = 'pass'
+  show = 'pass'
   execute_on = final
   console = false
   file_base = 'nek_out'
-  [console]
-    type = Console
-    time_step_interval = 100
-  []
+  #[console]
+  #  type = Console
+  #  time_step_interval = 100
+  #[]
 []
 
 P_U0 = 0.5
@@ -228,8 +228,8 @@ ITER_delta = 2
     type = ParsedPostprocessor
     expression = 'if(( serrl2 < ${TOL_S} |  serrl2 < ${TOL}) &
                   iter_s_diff <= ${ITER_delta} &
-                      solver_t = 0 &
-                      solver_v = 0, 1, 0)'
+                      solver_v = 0 &
+                      solver_t = 0, 1, 0)'
     pp_names = 'serrl2 iter_s_diff solver_t solver_v'
     execute_on = final
   []
