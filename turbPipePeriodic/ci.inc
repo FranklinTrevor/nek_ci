@@ -18,7 +18,7 @@ void ciSetup(MPI_Comm comm, setupAide &options)
   options.setArgs("SOLUTION OUTPUT INTERVAL", std::string("100"));
   options.setArgs("VISCOSITY", std::to_string(1.0 / 19000.0));
   options.setArgs("DENSITY", std::string("1.0"));
-  options.setArgs("END TIME", std::string("1.0"));
+  options.setArgs("END TIME", std::string("0.5"));
   options.setArgs("BDF ORDER", std::string("2"));
   options.setArgs("ADVECTION TYPE", "CONVECTIVE+CUBATURE");
   options.setArgs("DT", std::string("1e-3"));
