@@ -41,7 +41,7 @@ void uservp(nrs_t *nrs,
     const dfloat rhoCpFluid = rho * 1.0;
     const dfloat conFluid = mue;
     const dfloat rhoCpSolid = rhoCpFluid * 0.1;
-    const dfloat conSolid = 10 * conFluid;
+    const dfloat conSolid = 10.0 * conFluid;
 
     // velocity
     const occa::memory o_mue = o_UProp.slice(0 * nrs->fieldOffset);

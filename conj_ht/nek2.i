@@ -16,7 +16,7 @@
   []
 []
 
-Pe    = 1000.0         # Pecklet number
+Pe    = 1000.0         # Peclet number
 q     =    1.0         # Heat source of each plate
 k     =   10.0         # Solid conductivity / Fluid conductivity
 HP_H  =    0.5         # Solid plate height / Fluid height

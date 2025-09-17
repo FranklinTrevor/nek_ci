@@ -10,11 +10,11 @@ void scalarDirichletConditions(bcData *bc)
 {
   float Pe, q, k, HP_H, L, c1, c2, c3, c4;
   
-  Pe   = 1000.0;         // Pecklet number
+  Pe   = 1000.0;         // Peclet number
   q    =    1.0;         // Heat source of each plate
   k    =   10.0;         // Solid conductivity / Fluid conductivity
   HP_H =    0.5;         // Solid plate height / Fluid height
-  L    =    8.0;         // Channel non-dimensional lenght
+  L    =    8.0;         // Channel non-dimensional length
   c1   = - Pe * q / k;
   c2   = - Pe * q * HP_H;
   c3   = 2.0 * q * HP_H;
@@ -52,7 +52,7 @@ void scalarNeumannConditions(bcData* bc)
 {
   float Pe, q, k, HP_H, c3;
   
-  Pe   = 1000.0;         // Pecklet number
+  Pe   = 1000.0;         // Peclet number
   q    =    1.0;         // Heat source of each plate
   k    =   10.0;         // Solid conductivity / Fluid conductivity
   HP_H =    0.5;         // Solid plate height / Fluid height
