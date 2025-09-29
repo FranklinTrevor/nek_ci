@@ -1,5 +1,5 @@
-channel
-=======
+Stokes Flow
+===========
 
 .. _channel:
 
@@ -27,8 +27,7 @@ The forcing function :math:`\vec{f}` for testing the manufactured solution is, t
 
   \vec{f} = - \nabla \nu \left(\nabla \vec{v} + \nabla \vec{v}^T \right)
 
-In this case, the solution field is :math:`\phi=\{u,v\}`.
-Tests are performed using a polynomial order of 7, while the reference error obtained in Sawtooth used a polynomial order of 5.
+Tests are performed using a polynomial order of 7 and two modes are tested.
 The CI mode 1 uses the original geometry, while the CI mode 2 rotates the geometry by :math:`45°`.
 Errors were computed at :math:`t=0.1`.
 Results for the error in the solution field using different polynomial orders are presented in :numref:`fig:channel1` and :numref:`fig:channel2` for each CI mode, respectively.
@@ -40,7 +39,7 @@ These figures illustrate the error decay trend for the velocity components, whic
   :figclass: align-center
   :scale: 15%
 
-  :math:`L_2`-norm of errors for case channel CI mode 1.
+  :math:`L_2`-norm of errors for case channel - CI mode 1.
 
 .. _fig:channel2:
 .. figure:: figs/channel_2.png
@@ -48,4 +47,4 @@ These figures illustrate the error decay trend for the velocity components, whic
   :figclass: align-center
   :scale: 15%
 
-  :math:`L_2`-norm of errors for case channel CI mode 2.
+  :math:`L_2`-norm of errors for case channel CI - mode 2.

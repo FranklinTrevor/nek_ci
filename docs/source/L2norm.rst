@@ -1,5 +1,5 @@
-:math:`L_2`-norm calculation
-============================
+Error norms
+===========
 
 .. _L2-norm calculation:
 
@@ -16,7 +16,6 @@ In general, CI tests are evaluated by computing the :math:`L_2`-norm of the erro
 where :math:`\epsilon_{\phi_{ref}}` is the reference error used to evaluate the solver's performance.
 The variables selected in the solution field :math:`\phi` for comparison with the exact solution can include the velocity components :math:`\{u,v,w\}`, the pressure :math:`p`, or passive scalars :math:`\{s0,s1\}`.
 Passive scalar :math:`s0` is usually refered to as the temperature.
-Reference errors were obtained in the HPC Sawtooth, while tests are performed using a polynomial order higher than the one selected for the reference error.
 
 The :math:`L_2`-norm is calculated as
 

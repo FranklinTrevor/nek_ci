@@ -1,5 +1,5 @@
-lowMach
-=======
+Low-Mach Test
+=============
 
 The low Mach compressible governing equations are obtained by filtering the acoustic waves from the fully compressible Navier-Stokes equations.
 As a result, the pressure is split into a spatially constant, leading-order thermodynamic component and a hydrodynamic, first-order component, which appears in the momentum equation [Tombo1997]_.
@@ -33,10 +33,9 @@ The exact solution for the above system is a smooth step profile, given by,
 where :math:`\delta` is a user-specified parameter which controls the sharpness of the solution profile.
 Dirichlet boundary conditions are specified at the x-extents of the domain, :math:`x=[-1,1]`, which correspond to the exact solution values from the above relation.
 
-The solution fields are :math:`\phi=\{u,p,T\}`.
-The reference error used to evaluate the solver's performance was obtained in the HPC Sawtooth with a polynomial order of 5.
-Tests are performed using a polynomial order of 7.
-The CI mode 1 tests the low Mach solver, while the CI mode 2 also includes subcycling in the calculations.
+Tests are performed using a polynomial order of 7 and two CI modes are tested.
+Both CI tests exercise the $lowMach$ plugin in NekRS.
+The only difference between the two tests is that CI index 2 also uses subcycling for extrapolation of convective terms in both the fluid and scalar solvers.
 Errors were computed at :math:`t=0.3`.
 :numref:`fig:lowMach1` and :numref:`fig:lowMach2` present the :math:`L_2`-norm obtained for both CI modes.
 Results show the decay trend of error norms for the *lowMach* case for the :math:`x`-component of velocity, hydrodynamic pressure, and temperature fields.
@@ -48,7 +47,7 @@ All solution fields exhibit spectrally vanishing errors, validating the low Mach
   :figclass: align-center
   :scale: 15%
 
-  :math:`L_2`-norm of errors for case lowMach CI mode 1.
+  :math:`L_2`-norm of errors for case lowMach - CI mode 1.
 
 .. _fig:lowMach2:
 .. figure:: figs/lowMach_2.png
@@ -56,4 +55,4 @@ All solution fields exhibit spectrally vanishing errors, validating the low Mach
   :figclass: align-center
   :scale: 15%
 
-  :math:`L_2`-norm of errors for case lowMach CI mode 2.
+  :math:`L_2`-norm of errors for case lowMach - CI mode 2.

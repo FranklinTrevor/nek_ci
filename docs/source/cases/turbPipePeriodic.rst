@@ -1,5 +1,5 @@
-turbPipePeriodic
-================
+Turbulent Pipe Flow (LES)
+=========================
 
 .. _turbPipePeriodic:
 
@@ -32,7 +32,7 @@ The computed friction velocity is benchmarked against the DNS data from El Khour
 
 .. math::
 
-  err = |u_\tau - u_{\tau_{DNS}}| < 1.00E-01
+  err = |u_\tau - u_{\tau_{DNS}}|
 
 where
 

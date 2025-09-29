@@ -1,4 +1,4 @@
-ethier
+Ethier
 ======
 
 .. _ethier:
@@ -26,16 +26,15 @@ where :math:`a,d` are user-specified parameters, :math:`\{x,y,z\}` are the coord
 Note that, for the passive scalar solver tests, the transported variable is :math:`u`.
 
 The solution fields are :math:`\phi=\{u,p,s_1,s_2\}` corresponding to the x-velocity, pressure, scalars 0 and 1, respectively.
-The reference error used to evaluate the solver's performance was obtained in the HPC Sawtooth with a polynomial order of 7.
-Tests are performed using a polynomial order of 9.
 
 For all CI modes analyzed, the :math:`L_2`-norm was calculated for different polynomial orders :math:`N`, for the Navier-Stokes solver for the x-component of velocity, pressure, and from the passive scalar solver.
-All figures presented below show the error decay trend.
-These figures were obtained considering the CI modes reported in Table 1.
-This trend confirms spectral decay of errors and demonstrates consistency and accuracy of both the flow and passive scalar solvers.
+Figures presented below show the error decay trend for the CI tests for this case.
+The trend confirms spectral decay of errors and demonstrates consistency and accuracy of both the flow and passive scalar solvers.
 To evaluate the solver performance, the number of iterations required for the convergence of the x-velocity, pressure, and passive scalars is also included in the tests.
+Specific *NekRS* modules tested for each CI case are mentioned below.
 
-**CI Mode 2**
+CI Mode 2
+---------
 
 This CI mode verifies the correct functioning of the following capabilities of NekRS:
 
@@ -51,10 +50,11 @@ Errors were computed at :math:`t=0.06` and are shown in :numref:`fig:ethier_2`.
   :figclass: align-center
   :scale: 15%
 
-  :math:`L_2`-norm of errors for case ethier CI mode 2.
+  :math:`L_2`-norm of errors for case ethier - CI mode 2.
 
 
-**CI Mode 3**
+CI Mode 3
+---------
 
 This CI mode verifies the correct functioning of:
 
@@ -68,10 +68,11 @@ Errors were computed at :math:`t=0.06` and are shown in :numref:`fig:ethier_3`.
   :figclass: align-center
   :scale: 15%
 
-  :math:`L_2`-norm of errors for case ethier CI mode 3.
+  :math:`L_2`-norm of errors for case ethier - CI mode 3.
 
 
-**CI Mode 4**
+CI Mode 4
+---------
 
 This CI mode tests that both features verified in CI modes 2 and 3 work together correctly. These are:
 
@@ -87,10 +88,11 @@ Errors were computed at :math:`t=0.2` and are shown in :numref:`fig:ethier_4`.
   :figclass: align-center
   :scale: 15%
 
-  :math:`L_2`-norm of errors for case ethier CI mode 4.
+  :math:`L_2`-norm of errors for case ethier - CI mode 4.
 
 
-**CI Mode 5**
+CI Mode 5
+---------
 
 This CI mode tests:
 
@@ -104,10 +106,11 @@ Errors were computed at :math:`t=0.2` and are shown in :numref:`fig:ethier_5`.
   :figclass: align-center
   :scale: 15%
 
-  :math:`L_2`-norm of errors for case ethier CI mode 5.
+  :math:`L_2`-norm of errors for case ethier - CI mode 5.
 
 
-**CI Mode 6**
+CI Mode 6
+---------
 
 This CI mode tests:
 
@@ -122,10 +125,11 @@ Errors were computed at :math:`t=0.2` and are shown in :numref:`fig:ethier_6`.
   :figclass: align-center
   :scale: 15%
 
-  :math:`L_2`-norm of errors for case ethier CI mode 6.
+  :math:`L_2`-norm of errors for case ethier - CI mode 6.
 
 
-**CI Mode 7**
+CI Mode 7
+---------
 
 This CI mode tests:
 
@@ -140,10 +144,11 @@ Errors were computed at :math:`t=0.012` and are shown in :numref:`fig:ethier_7`.
   :figclass: align-center
   :scale: 15%
 
-  :math:`L_2`-norm of errors for case ethier CI mode 7.
+  :math:`L_2`-norm of errors for case ethier - CI mode 7.
 
 
-**CI Mode 8**
+CI Mode 8
+---------
 
 This CI mode tests:
 
@@ -152,7 +157,6 @@ This CI mode tests:
 
 This CI mode also tests that the final CFL number is below the target number, and the total number of time steps.
 Errors were computed at :math:`t=0.2` and are shown in :numref:`fig:ethier_8`.
-This is the only CI mode that does not show a spectral decay trend.
 
 .. _fig:ethier_8:
 .. figure:: figs/ethier_8.png
@@ -160,10 +164,11 @@ This is the only CI mode that does not show a spectral decay trend.
   :figclass: align-center
   :scale: 15%
 
-  :math:`L_2`-norm of errors for case ethier CI mode 8.
+  :math:`L_2`-norm of errors for case ethier - CI mode 8.
 
 
-**CI Mode 9**
+CI Mode 9
+---------
 
 This CI mode tests:
   
@@ -179,10 +184,11 @@ Errors were computed at :math:`t=0.06` and are shown in :numref:`fig:ethier_9`.
   :figclass: align-center
   :scale: 15%
 
-  :math:`L_2`-norm of errors for case ethier CI mode 9.
+  :math:`L_2`-norm of errors for case ethier - CI mode 9.
 
 
-**CI Mode 10**
+CI Mode 10
+----------
 
 This CI mode tests:
 
@@ -197,10 +203,11 @@ Errors were computed at :math:`t=0.06` and are shown in :numref:`fig:ethier_10`.
   :figclass: align-center
   :scale: 15%
 
-  :math:`L_2`-norm of errors for case ethier CI mode 10.
+  :math:`L_2`-norm of errors for case ethier - CI mode 10.
 
 
-**CI Mode 11**
+CI Mode 11
+----------
 
 This CI mode tests:
 
@@ -216,10 +223,11 @@ Errors were computed at :math:`t=0.06` and are shown in :numref:`fig:ethier_11`.
   :figclass: align-center
   :scale: 15%
 
-  :math:`L_2`-norm of errors for case ethier CI mode 11.
+  :math:`L_2`-norm of errors for case ethier - CI mode 11.
 
 
-**CI Mode 12**
+CI Mode 12
+----------
 
 This CI mode tests:
 
@@ -234,10 +242,11 @@ Additionally, the test verifies that the passive scalar 0 is deactivated.
   :figclass: align-center
   :scale: 15%
 
-  :math:`L_2`-norm of errors for case ethier CI mode 12.
+  :math:`L_2`-norm of errors for case ethier - CI mode 12.
 
 
-**CI Mode 14**
+CI Mode 14
+----------
 
 This CI mode tests:
 
@@ -253,4 +262,4 @@ Errors were computed at :math:`t=0.06` and are shown in :numref:`fig:ethier_14`.
   :figclass: align-center
   :scale: 15%
 
-  :math:`L_2`-norm of errors for case ethier CI mode 14.
+  :math:`L_2`-norm of errors for case ethier - CI mode 14.

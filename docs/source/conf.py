@@ -2,7 +2,7 @@
 
 # -- Project information
 
-project = 'nek-ci_doc'
+project = 'Nek CI docs'
 copyright = '2025, nsaini'
 author = 'nsaini'
 

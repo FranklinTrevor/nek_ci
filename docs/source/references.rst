@@ -3,6 +3,8 @@ References
 
 .. .. rubric:: References
 
+.. [Driver1985] Driver, David M., and H. Lee Seegmiller. "Features of a reattaching turbulent shear layer in divergent channelflow." AIAA journal 23.2 (1985): 163-171.
+
 .. [Ethier1994] Ethier, C. Ross, and D. A. Steinman. "Exact fully 3D Navier–Stokes solutions for benchmarking." International Journal for Numerical Methods in Fluids 19.5 (1994): 369-375.
 
 .. [Khoury2013] El Khoury, George K., et al. "Direct numerical simulation of turbulent pipe flow at moderately high Reynolds numbers." Flow, turbulence and combustion 91 (2013): 475-495.
@@ -16,4 +18,3 @@ References
 .. [Tombo1998] Tomboulides, Ananias G., and Steven A. Orzag. "A quasi-two-dimensional benchmark problem for low Mach number compressible codes." Journal of Computational Physics 146.2 (1998): 691-706.
 
 .. [Tombo2024] Tomboulides, Ananias, Nadish Saini, Dillon Shaver, Aleksandr Obabko, Haomin Yuan, Elia Merzari, and Paul Fischer. "A Robust Spectral Element Implementation of the K–Τ Rans Model in Nek5000/Nekrs." *Available at SSRN 4785448.* (2024)
-

@@ -1,5 +1,5 @@
-ktauChannel
-===========
+Turbulent Channel Flow (RANS)
+=============================
 
 .. _ktauChannel:
 
@@ -23,17 +23,14 @@ The corresponding friction Reynolds number :math:`Re_\tau`, based on the frictio
 
 where :math:`\tau_w` is the computed wall shear stress, and :math:`\rho` is the density.
 The case is benchmarked by evaluating friction velocity against the widely accepted DNS data by Lee et al. [Lee2015]_.
-To pass the test, the absolute error must be
 
 .. math::
 
-  err = |u_\tau - u_{\tau_{DNS}}| < 5.53E-04
+  err = |u_\tau - u_{\tau_{DNS}}|
 
 where
 
 .. math::
 
-  u_{\tau_{DNS}} = 4.58E-02
+  u_{\tau_{DNS}} = 4.58 \times 10^{-2}
 
-The reference error was obtained running the simulation in Sawtooth using a polynomial order of 3.
-The test runs with a polynomial order of 5.
