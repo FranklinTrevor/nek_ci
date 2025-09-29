@@ -1,0 +1,90 @@
+//
+// nekRS User Defined File
+//
+#include "udf.hpp"
+#include "plugins/RANSktau.hpp"
+
+#include "ci.inc"
+
+static dfloat rho, mueLam;
+
+#ifdef __okl__
+
+#include "bfs.oudf"
+
+#endif
+
+
+void userq(nrs_t *nrs, double time, occa::memory o_S, occa::memory o_FS)
+{
+  mesh_t *mesh = nrs->meshV;
+  cds_t *cds = nrs->cds;
+
+  RANSktau::updateSourceTerms();
+}
+
+void uservp(nrs_t *nrs,
+            double time,
+            occa::memory o_U,
+            occa::memory o_S,
+            occa::memory o_UProp,
+            occa::memory o_SProp)
+{
+  mesh_t *mesh = nrs->meshV;
+  cds_t *cds = nrs->cds;
+
+  RANSktau::updateProperties();
+}
+
+void UDF_LoadKernels(occa::properties& kernelInfo)
+{
+#if 0
+  {
+    auto props = kernelInfo;
+    props["defines/p_sigma_k"] = 0.6;
+    RANSktau::buildKernel(props);
+  }
+#endif
+}
+
+void UDF_Setup0(MPI_Comm comm, setupAide &options)
+{
+  options.getArgs("CI-MODE", ciMode);
+  if (ciMode) {
+    ciSetup(comm, options);
+  }
+}
+
+void UDF_Setup(nrs_t *nrs)
+{
+  mesh_t *mesh = nrs->meshV;
+  cds_t *cds = nrs->cds;
+
+  udf.properties = &uservp;
+  udf.sEqnSource = &userq;
+
+  const int scalarFieldStart = 0;
+  platform->options.getArgs("VISCOSITY", mueLam);
+  platform->options.getArgs("DENSITY", rho);
+
+  RANSktau::setup(nrs, mueLam, rho, scalarFieldStart);
+
+  auto uin = (double *)nek::scPtr(1);
+  auto kin = (double *)nek::scPtr(2);
+  auto tauin = (double *)nek::scPtr(3);
+
+  nrs->o_usrwrk = platform->device.malloc<dfloat>(3 * nrs->fieldOffset);
+  nrs->o_usrwrk.copyFrom(uin, mesh->Nlocal, 0 * nrs->fieldOffset);
+  nrs->o_usrwrk.copyFrom(kin, mesh->Nlocal, 1 * nrs->fieldOffset);
+  nrs->o_usrwrk.copyFrom(tauin, mesh->Nlocal, 2 * nrs->fieldOffset);
+}
+
+
+void UDF_ExecuteStep(nrs_t *nrs, double time, int tstep)
+{
+  if(nrs->lastStep) getCfErr(nrs);
+
+  if (ciMode) {
+    ciTestErrors(nrs, time, tstep);
+  }
+}
