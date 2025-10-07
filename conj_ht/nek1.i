@@ -37,8 +37,8 @@ c4    = ${fparse -c2 * 17/70}
   #[]
 []
 
-TOL_U = 3.00E-09
-TOL_T = 1.00E-05
+TOL_U = 1.00E-10
+TOL_T = 5.00E-09
 TOL   = 1.00E-11
 
 [Functions]

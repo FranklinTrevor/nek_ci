@@ -15,6 +15,7 @@ c   so heat leaves only through advection at the flow outlet.
 c
 c-----------------------------------------------------------------------
       subroutine userchk
+      implicit none
       include 'SIZE'
       include 'TOTAL'
 
@@ -23,68 +24,67 @@ c-----------------------------------------------------------------------
       COMMON /NRSSCPTR/ nrs_scptr(1)
       integer*8         nrs_scptr
 
-      real  wrk(lx1,ly1,lz1,lelt,3)
+      real  vxe(lx1,ly1,lz1,lelv)
+      real  tempe(lx1,ly1,lz1,lelt)
+
+      integer nv,nt,i
+      real ux,temp
+      real err_inf, err_l2, err_l1
+      real glamax,glsc3,glsc2
 
       nrs_scptr(1) = loc(err(1))
 
-      nv = nx1*ny1*nz1*nelv
-      nt = nx1*ny1*nz1*nelt
+      nv = lx1*ly1*lz1*nelv
+      nt = lx1*ly1*lz1*nelt
 
-      call copy(wrk(1,1,1,1,1),vx,nv)
-      call copy(wrk(1,1,1,1,2),vy,nv)
-      call copy(wrk(1,1,1,1,3), t,nt)
-c      call load_fld('nekSolution.fld')
-c      call sub2(wrk(1,1,1,1,1),vx,nv)
-c      call sub2(wrk(1,1,1,1,2),vy,nv)
-c      call sub2(wrk(1,1,1,1,3), t,nt)
+      call copy(vxe,vx,nv)
+      call copy(tempe,t,nt)
 
-      err_inf = glamax(wrk(1,1,1,1,1),nv)
-      err_l2  = glsc3(wrk(1,1,1,1,1),bm1,wrk(1,1,1,1,1),nv)
+      do i=1,nt
+        call exact(i,1,1,1,ux,temp)
+        if(i.le.nv) vxe(i,1,1,1) = abs(vxe(i,1,1,1) - ux)
+        tempe(i,1,1,1) = abs(tempe(i,1,1,1) - temp)
+      enddo
+
+      ! call outpost(vxe,vy,vz,pr,tempe,'err')
+
+      err_inf = glamax(vxe,nv)
+      err_l1  = glsc2(vxe,bm1,nv)
+      err_l2  = glsc3(vxe,bm1,vxe,nv)
       err(1) = sqrt(err_l2)
-c      if(nid.eq.0) write(6,*) 'inf/L2 error vx:', err_inf, sqrt(err_l2)
+      ! if(nid.eq.0)then
+      !   write(6,*) 'inf/L1/L2 error vx:', err_inf,err_l1,sqrt(err_l2)
+      ! endif
 
-c      err_inf = glamax(wrk(1,1,1,1,2),nv)
-c      err_l2  = glsc3(wrk(1,1,1,1,2),bm1,wrk(1,1,1,1,2),nv)
-c      if(nid.eq.0) write(6,*) 'inf/L2 error vy:', err_inf, sqrt(err_l2)
-
-      err_inf = glamax(wrk(1,1,1,1,3),nt)
-      err_l2  = glsc3(wrk(1,1,1,1,3),bm2,wrk(1,1,1,1,3),nt)
+      err_inf = glamax(tempe,nt)
+      err_l1  = glsc2(tempe,bm1,nt)
+      err_l2  = glsc3(tempe,bm1,tempe,nt)
       err(2) = sqrt(err_l2)
-c      if(nid.eq.0) write(6,*) 'inf/L2 error t:', err_inf, sqrt(err_l2)
+      ! if(nid.eq.0)then
+      !   write(6,*) 'inf/L1/L2 error t:', err_inf,err_l1,sqrt(err_l2)
+      ! endif
 
       return
       end
 c-----------------------------------------------------------------------
       subroutine useric (ix,iy,iz,ieg)
-
+      implicit none
 C     Set initial conditions
 
       include 'SIZE'
       include 'TOTAL'
       include 'NEKUSE'
 
-      real Pe,q,k,HP_H,c1,c2,c3,c4
+      integer ix,iy,iz,ieg,ie
 
-      ux   = 6.0*y*(1.0 - y)
+      ie = gllel(ieg)
+
+      ux   = 0.0
       uy   = 0.0
       uz   = 0.0
+      temp = 0.0
 
-      Pe   = 1000.0         ! Pecklet number
-      q    =    1.0         ! Heat source of each plate
-      k    =   10.0         ! Solid conductivity / Fluid conductivity
-      HP_H =    0.5         ! Solid plate height / Fluid height
-      c1   = - Pe * q / k
-      c2   = - Pe * q * HP_H
-      c3   = 2.0 * q * HP_H
-      c4   = - c2 * 17.0 / 70.0
-
-      if (y.gt.1.0) then
-        temp = c1*(y**2/2.0-y*(1.0+HP_H)+(0.5+HP_H))+c4 !+c3*x
-      elseif (y.lt.0.0) then
-        temp = c1*(y**2/2.0+y*HP_H)+c4 !+c3*x
-      else
-        temp = c2*(y**4-2.0*y**3+y)+c4 !+c3*x
-      endif
+      call exact(ix,iy,iz,ie,ux,temp)
 
       return
       end
@@ -139,3 +139,38 @@ c-----------------------------------------------------------------------
       return
       end
 c-----------------------------------------------------------------------
+      subroutine exact(ix,iy,iz,e,ux,temp)
+      implicit none
+      include 'SIZE'
+      include 'TOTAL'
+
+      integer ix,iy,iz,e
+
+      real Pe,q,k,HP_H,c1,c2,c3,c4
+      real xx,yy
+      real ux,temp
+
+      xx = xm1(ix,iy,iz,e)
+      yy = ym1(ix,iy,iz,e)
+
+      ux = 6.0*yy*(1.0-yy)
+
+      Pe   = 1000.0         ! Peclet number
+      q    =    1.0         ! Heat source of each plate
+      k    =   10.0         ! Solid conductivity / Fluid conductivity
+      HP_H =    0.5         ! Solid plate height / Fluid height
+      c1   = - Pe * q / k
+      c2   = - Pe * q * HP_H
+      c3   = 2.0 * q * HP_H
+      c4   = - c2 * 17.0 / 70.0
+
+      if (yy.gt.1.0) then
+        temp = c1*(yy**2/2.0-yy*(1.0+HP_H)+(0.5+HP_H))+c4+c3*xx
+      elseif (yy.lt.0.0) then
+        temp = c1*(yy**2/2.0+yy*HP_H)+c4+c3*xx
+      else
+        temp = c2*(yy**4-2.0*yy**3+yy)+c4+c3*xx
+      endif
+
+      return
+      end
