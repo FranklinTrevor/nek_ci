@@ -1,6 +1,5 @@
 static dfloat Re_tau;
 static dfloat zLength;
-static dfloat dt0;
 
 #include "ci.inc"
 
@@ -30,8 +29,6 @@ void UDF_Setup0(MPI_Comm comm, setupAide &options)
   if (ciMode) {
     ciSetup(comm, options);
   }
-
-  platform->options.getArgs("DT", dt0);
 }
 
 void UDF_Setup()
