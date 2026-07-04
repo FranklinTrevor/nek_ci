@@ -8,7 +8,7 @@
     max_parallel = 20
 
     requirement = 'The system shall compute the error norms of velocity and compare against exact solution.'
-    required_objects = 'NekRSProblem'
+    capabilities = 'nekrs'
   []
   [channel_cimode2]
     type = CSVDiff
@@ -19,6 +19,6 @@
     max_parallel = 20
 
     requirement = 'The system shall compute the error norms of velocity and compare against exact solution.'
-    required_objects = 'NekRSProblem'
+    capabilities = 'nekrs'
   []
 []
