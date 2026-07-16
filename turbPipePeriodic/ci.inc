@@ -15,7 +15,7 @@ void ciSetup(MPI_Comm comm, setupAide &options)
   options.setArgs("SOLUTION OUTPUT INTERVAL", std::string("100"));
   options.setArgs("FLUID VISCOSITY", std::to_string(1.0 / 19000.0));
   options.setArgs("FLUID DENSITY", std::string("1.0"));
-  options.setArgs("END TIME", std::string("0.5"));
+  options.setArgs("END TIME", std::string("1.0"));
   options.setArgs("BDF ORDER", std::string("2"));
   options.setArgs("ADVECTION TYPE", "CONVECTIVE+CUBATURE");
   options.setArgs("DT", std::string("1e-3"));
@@ -45,7 +45,7 @@ void ciSetup(MPI_Comm comm, setupAide &options)
   zLength = 6;
 }
 
-void ciTestErrors(nrs_t *nrs, double time, int tstep)
+void ciTestErrors(nrs_t *nrs, double time, int tstep, occa::memory &o_Uavg)
 {
   if (!nrs->lastStep) {
     return;
@@ -65,7 +65,7 @@ void ciTestErrors(nrs_t *nrs, double time, int tstep)
   platform->linAlg->fill(mesh->Nlocal, 1.0, o_tmp);
   const auto areaWall = mesh->surfaceAreaMultiplyIntegrate(o_bidWall, o_tmp);
 
-  const auto utau = sqrt(std::abs(forces->viscousFriction()[0]) / areaWall);
+  const auto utau = sqrt(std::abs(forces->viscousFriction()[2]) / areaWall);
   // https://www.lstm.tf.fau.de/database/simulation-database/
   const auto utauRef = 5.7901316173625254E-02;
   const auto utauErr = std::abs((utau - utauRef) / utauRef);
