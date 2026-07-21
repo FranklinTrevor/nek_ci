@@ -11,6 +11,6 @@
     max_time = 600 
 
     requirement = 'The system shall reproduce the wall stress for turbulent pipe flow.'
-    required_objects = 'NekRSProblem'
+    capabilities = 'nekrs'
   []
 []
