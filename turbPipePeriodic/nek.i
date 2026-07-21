@@ -35,7 +35,7 @@
 # Reference value from:
 # https://www.lstm.tf.fau.de/database/simulation-database/
 P_utauRef = 5.7901316173625254E-02
-P_EPS = 1.00E-01
+P_EPS = 2.00E-02
 
 [Postprocessors]
   [drag]
@@ -55,7 +55,7 @@ P_EPS = 1.00E-01
   []
   [err]
     type = ParsedPostprocessor
-    expression = 'abs(utau - ${P_utauRef})'
+    expression = 'abs(utau - ${P_utauRef}) / ${P_utauRef}'
     pp_names = 'utau'
   []
   [pass]

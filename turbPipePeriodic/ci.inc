@@ -56,7 +56,7 @@ void ciTestErrors(nrs_t *nrs, double time, int tstep, occa::memory &o_Uavg)
   std::vector<int> bidWall = {1};
   auto o_bidWall = platform->device.malloc<int>(bidWall.size(), bidWall.data());
 
-  auto o_Sij = nrs->strainRate();
+  auto o_Sij = nrs->strainRate(nrs->fluid->fieldOffset, o_Uavg);
 
   auto forces = nrs->aeroForces(o_bidWall, o_Sij);
   o_Sij.free();
@@ -70,9 +70,5 @@ void ciTestErrors(nrs_t *nrs, double time, int tstep, occa::memory &o_Uavg)
   const auto utauRef = 5.7901316173625254E-02;
   const auto utauErr = std::abs((utau - utauRef) / utauRef);
 
-  if (platform->comm.mpiRank() == 0) {
-    printf("tau: %g; relative error = %g\n", utau, utauErr);
-  }
-
-  (fabs(utauErr) < EPS) ? (CiPassTest()) : (CiFailTest());
+  CiEvalTest("utau:" + to_string_f(utau) + "; relative error: " + to_string_f(utauErr), fabs(utauErr) < EPS);
 }
