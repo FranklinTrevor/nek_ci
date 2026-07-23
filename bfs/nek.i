@@ -4,8 +4,9 @@
 []
 
 [Problem]
-  type = NekRSStandaloneProblem
+  type = NekRSProblem
   casename = 'bfs'
+  initialize_usrwrk = false
 []
 
 [Executioner]
@@ -29,7 +30,7 @@ P_EPS = 1.38E-03
 [Postprocessors]
   [cferrInt]
     type = NekSideIntegral
-    field = scalar02
+    field = scalar03
     boundary = '4'
     execute_on = final
   []

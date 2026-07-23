@@ -1,28 +1,26 @@
 #include <math.h>
 #include <vector>
 
-#include "postProcessing.hpp"
-
 static int ciMode = 0;
 
-#define EPS 7.2e-3
+#define EPS 7.4e-4
 
 void ciSetup(MPI_Comm comm, setupAide &options)
 {
-  options.setArgs("POLYNOMIAL DEGREE", std::string("5"));
   options.setArgs("RESTART FILE NAME", std::string("bfs.fld+time=0"));  
   options.setArgs("END TIME", std::string("0.005"));
   options.setArgs("DT", std::string("1e-04"));
+  options.setArgs("SOLUTION OUTPUT INTERVAL", "0");
 }
 
-void extractLine(nrs_t *nrs, double time, int tstep, occa::memory& o_tauw)
+void extractLine(occa::memory& o_tauw)
 {
-  const auto np = (platform->comm.mpiRank == 0) ? 200 : 0;
+  const auto np = (platform->comm.mpiRank() == 0) ? 200 : 0;
   const auto offset = np;
 
   static pointInterpolation_t *interpolator = nullptr;
   static std::vector<dfloat> xp, yp, zp;
-  static occa::memory o_tauwp;
+  static deviceMemory<dfloat> o_tauwp;
 
   if (!interpolator) {
     auto mesh = nrs->meshV;
@@ -46,63 +44,40 @@ void extractLine(nrs_t *nrs, double time, int tstep, occa::memory& o_tauw)
       xp.push_back(10.0);
       yp.push_back(y0);
       zp.push_back(z0);
-      o_tauwp = platform->device.malloc<dfloat>(offset);
+      o_tauwp.resize(offset);
     }
 
-    interpolator = new pointInterpolation_t(nrs);
-    interpolator->setPoints(np, xp.data(), yp.data(), zp.data());
+    interpolator = new pointInterpolation_t(mesh, platform->comm.mpiComm());
+    interpolator->setPoints(xp, yp, zp);
     interpolator->find();
   }
 
-  interpolator->eval(1, nrs->fieldOffset, o_tauw, offset, o_tauwp);
+  interpolator->eval(1, nrs->fluid->fieldOffset, o_tauw, offset, o_tauwp);
 
-  if (platform->comm.mpiRank == 0) {
+  if (platform->comm.mpiRank() == 0) {
     std::vector<dfloat> tauwp(np);
-    o_tauwp.copyTo(tauwp.data());
+    o_tauwp.copyTo(tauwp);
 
     std::ofstream f("profile.dat");
     for (int i = 0; i < np; i++) {
-      f << std::scientific << " " << 4.0 * xp[i] << " " << yp[i] << " " << zp[i] << " "
+      f << std::scientific << " " << xp[i] << " " << yp[i] << " " << zp[i] << " "
         << 2.0 * tauwp[i + 0 * offset] << std::endl;
     }
     f.close();
   }
 }
 
-occa::memory skinFriction(nrs_t *nrs, int nbID, const occa::memory& o_bID, occa::memory& o_Sij)
+void getCfErr(occa::memory &o_err)
 {
-  mesh_t *mesh = nrs->meshV;
-
-  auto o_tau = platform->device.malloc<dfloat>(3 * nrs->fieldOffset);
-
-  viscousShearStress(mesh->Nelements,
-                     nrs->fieldOffset,
-                     nbID,
-                     o_bID,
-                     mesh->o_sgeo,
-                     mesh->o_vmapM,
-                     mesh->o_EToB,
-                     nrs->o_mue,
-                     o_Sij,
-                     o_tau);
-
-  return o_tau;
-}
-
-void getCfErr(nrs_t *nrs)
-{
-  mesh_t *mesh = nrs->meshV;
+  auto mesh = nrs->meshV;
 
   std::vector<int> bidWall = {4};
-  occa::memory o_bidWall = platform->device.malloc<int>(bidWall.size(), bidWall.data());
+  auto o_bidWall = platform->device.malloc<int>(bidWall.size(), bidWall.data());
 
-  auto o_Sij = platform->o_memPool.reserve<dfloat>(2 * nrs->NVfields * nrs->fieldOffset);
-  postProcessing::strainRate(nrs, true, nrs->o_U, o_Sij);
-  auto o_tau = skinFriction(nrs, bidWall.size(), o_bidWall, o_Sij);
+  auto o_Sij = nrs->strainRate();
+  auto o_tau = nrs->viscousShearStress(o_bidWall, o_Sij);
 
-  // extractLine(nrs, time, tstep, o_tau);
-
-  auto o_err = nrs->cds->o_S.slice(2 * nrs->fieldOffset);
+  // extractLine(o_tau);
 
   cfErrKernel(mesh->Nelements,
               bidWall.size(),
@@ -114,21 +89,27 @@ void getCfErr(nrs_t *nrs)
               o_err);
 }
 
-void ciTestErrors(nrs_t *nrs, double time, int tstep)
+void ciTestErrors(double time, int tstep)
 {
   if (!nrs->lastStep) {
     return;
   }
 
-  mesh_t *mesh = nrs->meshV;
+  auto mesh = nrs->meshV;
 
-  auto o_err = nrs->cds->o_S.slice(2 * nrs->fieldOffset);
+  auto o_err = nrs->scalar->o_solution("cferr").slice(0, mesh->Nlocal);
+  getCfErr(o_err);
 
-  auto enorm = platform->linAlg->norm2(mesh->Nlocal, o_err, platform->comm.mpiComm);
+  std::vector<int> boundaryIDs = {4};
+  auto o_boundaryIDs = platform->device.malloc<int>(boundaryIDs.size(), boundaryIDs.data());
 
-  if (platform->comm.mpiRank == 0) {
-    printf("Error in Cf: %g\n", enorm);
-  }
+  auto cferrIntegral = mesh->surfaceAreaMultiplyIntegrate(o_boundaryIDs, o_err);
 
-  (enorm < EPS) ? (CIPASS) : (CIFAIL);
+  auto o_unity = platform->deviceMemoryPool.reserve<dfloat>(mesh->Nlocal);
+  platform->linAlg->fill(mesh->Nlocal, 1.0, o_unity);
+  auto surfaceArea = mesh->surfaceAreaMultiplyIntegrate(o_boundaryIDs, o_unity);
+
+  auto cferr = cferrIntegral / surfaceArea;
+
+  CiEvalTest("Cf area normalized error :" + to_string_f(cferr), cferr < EPS);
 }

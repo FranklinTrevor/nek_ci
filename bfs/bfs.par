@@ -3,39 +3,32 @@ polynomialOrder = 5
 startFrom = "bfs.fld"+time=0
 stopAt = endTime
 endTime = 0.005
-dt = 1e-04
+dt = 1e-4
 timeStepper = tombo2
 
-writeControl = simulationTime 
-writeInterval = 10.0
+checkpointControl = simulationTime 
+checkpointInterval = 1.0
+scalars = k,tau,cferr
 
 [PROBLEMTYPE]
 equation = navierStokes+variableViscosity
 
-[PRESSURE]
+[FLUID PRESSURE]
 residualTol = 1e-04
 
-[VELOCITY]
+[FLUID VELOCITY]
 boundaryTypeMap = v,O,W,W
 residualTol = 1e-06
 density = 1.0
-viscosity = -149700. 
+viscosity = -149700.0
 
-[SCALAR00] # k
+[SCALAR K]
 boundaryTypeMap = t,I,t,t 
 residualTol = 1e-08
-rho = 1.0
-diffusivity = -149700. 
 
-[SCALAR01] # tau
+[SCALAR TAU]
 boundaryTypeMap = t,I,t,t 
 residualTol = 1e-08
-rho = 1.0
-diffusivity = -149700. 
 
-[SCALAR02] # err
+[SCALAR CFERR]
 solver = none
-boundaryTypeMap = t,I,t,t 
-residualTol = 1e-08
-rho = 1.0
-diffusivity = -149700. 

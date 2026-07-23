@@ -1,32 +1,16 @@
 c-----------------------------------------------------------------------
-      subroutine useric (ix,iy,iz,ieg)
-      include 'SIZE'
-      include 'TOTAL'
-      include 'NEKUSE'
+      subroutine usrsetvert(glo_num,nel,nx,ny,nz) ! to modify glo_num
+      integer*8 glo_num(1)
 
-      ux   = 1.0  
-      uy   = 0.0 
-      uz   = 0.0
-
-      if (ifield.eq.2) then
-         temp = 0.01
-      elseif (ifield.eq.3) then
-         temp = 0.1
-      endif
-      
-      return
-      end
-c-----------------------------------------------------------------------
-      subroutine userchk
-      include 'SIZE'
-      include 'TOTAL'
-      
-      return
-      end
-c-----------------------------------------------------------------------
-      subroutine usrdat   ! This routine to modify element vertices
-      include 'SIZE'      ! _before_ mesh is generated, which 
-      include 'TOTAL'     ! guarantees GLL mapping of mesh.
+      ! kludge for periodic bc in z
+      nxy  = nx*ny
+      nxyz = nx*ny*nz
+      do iel = 1,nel
+         ioff = nxyz*(iel-1)
+         do ixy = 1,nxy
+            glo_num(ioff + nxy*(nz-1) + ixy) = glo_num(ioff + ixy)
+         enddo
+      enddo
 
       return
       end
@@ -99,9 +83,6 @@ c-----------------------------------------------------------------------
      $              tauin(lx1,ly1,lz1,lelv)
       real bcin, kin, tauin
 
-      common /NRSSCPTR/ nrs_scptr(3)
-      integer*8 nrs_scptr
-
       call getInletProf
 
       do ie=1,nelv
@@ -125,29 +106,13 @@ c-----------------------------------------------------------------------
         enddo
       enddo
 
-      nrs_scptr(1) = loc(uin(1,1,1,1))
-      nrs_scptr(2) = loc(kin(1,1,1,1))
-      nrs_scptr(3) = loc(tauin(1,1,1,1))
+      call nekrs_registerPtr('uin', uin)
+      call nekrs_registerPtr('kin', kin)
+      call nekrs_registerPtr('tauin', tauin)
             
       return
       end
 c-----------------------------------------------------------------------
-      subroutine usrsetvert(glo_num,nel,nx,ny,nz) ! to modify glo_num
-      integer*8 glo_num(1)
-
-      ! kludge for periodic bc in z
-      nxy  = nx*ny
-      nxyz = nx*ny*nz
-      do iel = 1,nel
-         ioff = nxyz*(iel-1)
-         do ixy = 1,nxy
-            glo_num(ioff + nxy*(nz-1) + ixy) = glo_num(ioff + ixy)
-         enddo
-      enddo
-
-      return
-      end
-C-----------------------------------------------------------------------
       subroutine getInletProf
 
       include 'SPLINE'
