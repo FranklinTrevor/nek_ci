@@ -1,74 +1,57 @@
-// Boundary conditions
-void velocityDirichletConditions(bcData *bc)
+void udfDirichlet(bcData *bc)
 {
-  bc->u = 6.0 * bc->y * (1.0 - bc->y);
-  bc->v = 0.0;
-  bc->w = 0.0;
+  const dfloat c1 = -p_PECLET * p_HEAT_SOURCE / p_SOLID_CONDUCTIVITY_RATIO;
+  const dfloat c2 = -p_PECLET * p_HEAT_SOURCE * p_SOLID_HEIGHT_RATIO;
+  const dfloat c4 = -c2 * 17.0 / 70.0;
+
+  if (isField("fluid velocity")) {
+    bc->uxFluid = p_VELOCITY_COEFFICIENT * bc->y * (1.0 - bc->y);
+    bc->uyFluid = 0.0;
+    bc->uzFluid = 0.0;
+  } else if (isField("scalar temperature")) {
+
+    // Fluid inlet
+    if (bc->id == 1) {
+      bc->sScalar = c2 * (bc->y * bc->y * bc->y * bc->y - 2.0 * bc->y * bc->y * bc->y + bc->y) + c4;
+    }
+
+    // Upper solid inlet
+    if (bc->id == 3) {
+      bc->sScalar = c1 * (0.5 * bc->y * bc->y - bc->y * (1.0 + p_SOLID_HEIGHT_RATIO) + (0.5 + p_SOLID_HEIGHT_RATIO)) + c4;
+    }
+
+    // Lower solid inlet
+    if (bc->id == 5) {
+      bc->sScalar = c1 * (0.5 * bc->y * bc->y + bc->y * p_SOLID_HEIGHT_RATIO) + c4;
+    }
+  }
 }
 
-void scalarDirichletConditions(bcData *bc)
+void udfNeumann(bcData *bc)
 {
-  dfloat Pe, q, k, HP_H, L, c1, c2, c3, c4;
-  
-  Pe   = 1000.0;         // Peclet number
-  q    =    1.0;         // Heat source of each plate
-  k    =   10.0;         // Solid conductivity / Fluid conductivity
-  HP_H =    0.5;         // Solid plate height / Fluid height
-  L    =    8.0;         // Channel non-dimensional length
-  c1   = - Pe * q / k;
-  c2   = - Pe * q * HP_H;
-  c3   = 2.0 * q * HP_H;
-  c4   = - c2 * 17.0 / 70.0;
-  
-  // Fluid inlet
-  if (bc->id == 1) {
-    bc->s = c2 * (bc->y * bc->y * bc->y - 2.0 * bc->y * bc->y + 1.0) * bc->y + c4;
-  }
-  //// Fluid outlet
-  //if (bc->id == 2) {
-  //  bc->s = c2 * (bc->y * bc->y * bc->y - 2.0 * bc->y * bc->y + 1.0) * bc->y + c4 + c3 * L;
-  //}
-  
-  // Solid superior plate inlet
-  if (bc->id == 3) {
-    bc->s = c1 * (bc->y * bc->y / 2.0 - bc->y * (1.0 + HP_H) + (0.5 + HP_H)) + c4;
-  }
-  //// Solid superior plate outlet
-  //if (bc->id == 4) {
-  //  bc->s = c1 * (bc->y * bc->y / 2.0 - bc->y * (1.0 + HP_H) + (0.5 + HP_H)) + c4 + c3 * L;
-  //}
-  
-  // Solid inferior plate inlet
-  if (bc->id == 5) {
-    bc->s = c1 * (bc->y * bc->y / 2.0 + bc->y * HP_H) + c4;
-  }
-  //// Solid inferior plate outlet
-  //if (bc->id == 6) {
-  //  bc->s = c1 * (bc->y * bc->y / 2.0 + bc->y * HP_H) + c4 + c3 * L;
-  //}
-}
+  const dfloat c3 = 2.0 * p_HEAT_SOURCE * p_SOLID_HEIGHT_RATIO;
 
-void scalarNeumannConditions(bcData* bc)
-{
-  dfloat Pe, q, k, HP_H, c3;
-  
-  Pe   = 1000.0;         // Peclet number
-  q    =    1.0;         // Heat source of each plate
-  k    =   10.0;         // Solid conductivity / Fluid conductivity
-  HP_H =    0.5;         // Solid plate height / Fluid height
-  c3   = 2.0 * q * HP_H;
-  
-  if (bc->id == 2) {
-    bc->flux = c3 / Pe;
-  }
-  if (bc->id == 4) {
-    bc->flux = c3 * k / Pe;
-  }
-  if (bc->id == 6) {
-    bc->flux = c3  * k / Pe;
-  }
-  if (bc->id == 7) {
-    bc->flux = 0.0;
+  if (isField("scalar temperature")) {
+
+    // Fluid outlet
+    if (bc->id == 2) {
+      bc->fluxScalar = c3 / p_PECLET;
+    }
+
+    // Upper solid outlet
+    if (bc->id == 4) {
+      bc->fluxScalar = c3 * p_SOLID_CONDUCTIVITY_RATIO / p_PECLET;
+    }
+
+    // Lower solid outlet
+    if (bc->id == 6) {
+      bc->fluxScalar = c3 * p_SOLID_CONDUCTIVITY_RATIO / p_PECLET;
+    }
+
+    // Exterior insulated solid walls
+    if (bc->id == 7) {
+      bc->fluxScalar = 0.0;
+    }
   }
 }
 
@@ -76,16 +59,14 @@ void scalarNeumannConditions(bcData* bc)
                    const dfloat CONST1,
                    const dfloat CONST2,
                    @ restrict const dlong *eInfo,
-                   @ restrict dfloat *QVOL)
+                   @ restrict dfloat *field)
 {
   for (dlong e = 0; e < Nelements; ++e; @outer(0)) {
     const dlong solid = eInfo[e];
+
     for (int n = 0; n < p_Np; ++n; @inner(0)) {
-      const int id = e * p_Np + n;
-      QVOL[id] = CONST1;
-      if (solid) {
-        QVOL[id] = CONST2;
-      }
+      const dlong id = e * p_Np + n;
+      field[id] = solid ? CONST2 : CONST1;
     }
   }
 }

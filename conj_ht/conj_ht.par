@@ -1,3 +1,5 @@
+userSections = CASEDATA
+
 [GENERAL] 
 #startFrom = "restart.fld"
 polynomialOrder = 7
@@ -7,17 +9,27 @@ endTime = 1.0
 dt = 1e-03
 timeStepper = tombo2
 
-writeControl = simulationTime
-writeInterval = 10
+checkpointControl = simulationTime
+checkpointInterval = 10
 
-[PRESSURE]
+scalars = temperature
+
+[FLUID PRESSURE]
 residualTol = 1e-06
 
-[VELOCITY]
+[FLUID VELOCITY]
 boundaryTypeMap = v, O, W
 residualTol = 1e-08
 
-[TEMPERATURE]
+[SCALAR TEMPERATURE]
 boundaryTypeMap = t, f, t, f, t, f, I
 residualTol = 1e-08
+mesh = fluid+solid
 
+[CASEDATA]
+P_PECLET = 1000.0
+P_HEAT_SOURCE = 1.0
+P_SOLID_CONDUCTIVITY_RATIO = 10.0
+P_SOLID_HEIGHT_RATIO = 0.5
+P_SOLID_HEAT_CAPACITY_RATIO = 0.1
+P_VELOCITY_COEFFICIENT = 6.0
