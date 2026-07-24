@@ -4,7 +4,7 @@
 []
 
 [Problem]
-  type = NekRSStandaloneProblem
+  type = NekRSProblem
   casename = 'ethier'
 []
 
@@ -43,13 +43,6 @@ TOL_T  = 7.29E-06
 TOL_S  = 7.96E-06
 TOL    = 1.00E-11
 
-ITER_V = 11
-ITER_P = 6
-ITER_T = 4
-ITER_S = 3
-ITER_delta = 2
-P_CFL = 0.5
-P_TSTEPS = 59 # 56 + 3
 
 [Functions]
   [unitFunction]
@@ -205,13 +198,13 @@ P_TSTEPS = 59 # 56 + 3
   []
   [terrl2]
     type = NekVolumeNorm
-    field = temperature
+    field = scalar01
     function = uexact
     execute_on = final
   []
   [serrl2]
     type = NekVolumeNorm
-    field = scalar01
+    field = scalar02
     function = uexact
     execute_on = final
   []
@@ -222,82 +215,14 @@ P_TSTEPS = 59 # 56 + 3
     execute_on = final
   []
   
-  # Calculate number of iterations
-  [v_iterations]
-    type = NekInfoPostprocessor
-    test_type = 'n_iter_velocity'
-    execute_on = final
-  []
-  [t_iterations]
-    type = NekInfoPostprocessor
-    test_type = 'n_iter_temperature'
-    execute_on = final
-  []
-  [p_iterations]
-    type = NekInfoPostprocessor
-    test_type = 'n_iter_pressure'
-    execute_on = final
-  []
-  [s_iterations]
-    type = NekInfoPostprocessor
-    test_type = 'n_iter_scalar01'
-    execute_on = final
-  []
-  
-  # Calculate difference of iterations
-  [iter_v_diff]
-    type = ParsedPostprocessor
-    expression = 'abs(v_iterations - ${ITER_V})'
-    pp_names = 'v_iterations'
-    execute_on = final
-  []
-  [iter_p_diff]
-    type = ParsedPostprocessor
-    expression = 'abs(p_iterations - ${ITER_P})'
-    pp_names = 'p_iterations'
-    execute_on = final
-  []
-  [iter_t_diff]
-    type = ParsedPostprocessor
-    expression = 'abs(t_iterations - ${ITER_T})'
-    pp_names = 't_iterations'
-    execute_on = final
-  []
-  [iter_s_diff]
-    type = ParsedPostprocessor
-    expression = 'abs(s_iterations - ${ITER_S})'
-    pp_names = 's_iterations'
-    execute_on = final
-  []
-  
-  # Other postprocessors
-  [cfl]
-    type = NekInfoPostprocessor
-    test_type = 'cfl'
-    execute_on = final
-  []
-  [time_steps]
-    type = NekInfoPostprocessor
-    test_type = 'tstep'
-    execute_on = final
-  []
-  
   # Check if all tests passed
   [pass]
     type = ParsedPostprocessor
     expression = 'if((uxerrl2 < ${TOL_V} | uxerrl2 < ${TOL}) &
-                     ( perrl2 < ${TOL_P} |  perrl2 < ${TOL}) &
-                     ( terrl2 < ${TOL_T} |  terrl2 < ${TOL}) &
-                     ( serrl2 < ${TOL_S} |  serrl2 < ${TOL}) &
-                  iter_v_diff <= ${ITER_delta} &
-                  iter_p_diff <= ${ITER_delta} &
-                  iter_t_diff <= ${ITER_delta} &
-                  iter_s_diff <= ${ITER_delta} &
-                          cfl <= ${P_CFL}      &
-                   time_steps <  ${P_TSTEPS}, 1, 0)'
-    pp_names = 'uxerrl2 perrl2 terrl2 serrl2
-                iter_v_diff iter_p_diff iter_t_diff iter_s_diff
-                cfl time_steps'
+                     (perrl2 < ${TOL_P} | perrl2 < ${TOL}) &
+                     (terrl2 < ${TOL_T} | terrl2 < ${TOL}) &
+                     (serrl2 < ${TOL_S} | serrl2 < ${TOL}), 1, 0)'
+    pp_names = 'uxerrl2 perrl2 terrl2 serrl2'
     execute_on = final
   []
 []

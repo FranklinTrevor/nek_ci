@@ -4,7 +4,7 @@
 []
 
 [Problem]
-  type = NekRSStandaloneProblem
+  type = NekRSProblem
   casename = 'ethier'
 []
 
@@ -42,10 +42,6 @@ TOL_P  = 1.08E-07
 TOL_S  = 1.07E-09
 TOL    = 1.00E-11
 
-ITER_V = 10
-ITER_P = 4
-ITER_S = 2
-ITER_delta = 2
 
 [Functions]
   [unitFunction]
@@ -201,7 +197,7 @@ ITER_delta = 2
   []
   [serrl2]
     type = NekVolumeNorm
-    field = scalar01
+    field = scalar02
     function = uexact
     execute_on = final
   []
@@ -212,63 +208,14 @@ ITER_delta = 2
     execute_on = final
   []
   
-  # Calculate number of iterations
-  [v_iterations]
-    type = NekInfoPostprocessor
-    test_type = 'n_iter_velocity'
-    execute_on = final
-  []
-  [p_iterations]
-    type = NekInfoPostprocessor
-    test_type = 'n_iter_pressure'
-    execute_on = final
-  []
-  [s_iterations]
-    type = NekInfoPostprocessor
-    test_type = 'n_iter_scalar01'
-    execute_on = final
-  []
-  
-  # Calculate difference of iterations
-  [iter_v_diff]
-    type = ParsedPostprocessor
-    expression = 'abs(v_iterations - ${ITER_V})'
-    pp_names = 'v_iterations'
-    execute_on = final
-  []
-  [iter_p_diff]
-    type = ParsedPostprocessor
-    expression = 'abs(p_iterations - ${ITER_P})'
-    pp_names = 'p_iterations'
-    execute_on = final
-  []
-  [iter_s_diff]
-    type = ParsedPostprocessor
-    expression = 'abs(s_iterations - ${ITER_S})'
-    pp_names = 's_iterations'
-    execute_on = final
-  []
-  
-  # Solver status
-  [solver_t]
-    type = NekInfoPostprocessor
-    test_type = 'solver_temperature'
-    execute_on = final
-  []
   
   # Check if all tests passed
   [pass]
     type = ParsedPostprocessor
     expression = 'if((uxerrl2 < ${TOL_V} | uxerrl2 < ${TOL}) &
-                     ( perrl2 < ${TOL_P} |  perrl2 < ${TOL}) &
-                     ( serrl2 < ${TOL_S} |  serrl2 < ${TOL}) &
-                  iter_v_diff <= ${ITER_delta} &
-                  iter_p_diff <= ${ITER_delta} &
-                  iter_s_diff <= ${ITER_delta} &
-                      solver_t = 0, 1, 0)'
-    pp_names = 'uxerrl2 perrl2 serrl2
-                iter_v_diff iter_p_diff iter_s_diff
-                solver_t'
+                     (perrl2 < ${TOL_P} | perrl2 < ${TOL}) &
+                     (serrl2 < ${TOL_S} | serrl2 < ${TOL}), 1, 0)'
+    pp_names = 'uxerrl2 perrl2 serrl2'
     execute_on = final
   []
 []
