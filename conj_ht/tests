@@ -8,7 +8,7 @@
     max_parallel = 20
     max_time = 300
 
-    requirement = 'The system shall compute the velocity and temperature error norms for the manufactured conjugate heat-transfer solution.'
+    requirement = 'The system shall compute the velocity and temperature error norms for the manufactured conjugate heat-transfer solution without characteristic subcycling.'
     required_objects = 'NekRSProblem'
   []
 
@@ -21,7 +21,7 @@
     max_parallel = 20
     max_time = 300
 
-    requirement = 'The system shall compute the velocity and temperature error norms for the manufactured conjugate heat-transfer solution using an alternative solver configuration.'
+    requirement = 'The system shall compute the velocity and temperature error norms for the manufactured conjugate heat-transfer solution using characteristic subcycling.'
     required_objects = 'NekRSProblem'
   []
 []

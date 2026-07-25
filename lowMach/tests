@@ -8,7 +8,7 @@
     max_parallel = 20
     max_time = 300
 
-    requirement = 'The system shall compute the velocity, temperature, and passive-scalar error norms for the manufactured low-Mach-flow solution.'
+    requirement = 'The system shall compute the velocity, temperature, and passive-scalar error norms for the manufactured low-Mach-flow solution without characteristic subcycling.'
     required_objects = 'NekRSProblem'
   []
 
@@ -21,7 +21,7 @@
     max_parallel = 20
     max_time = 300
 
-    requirement = 'The system shall compute the velocity, temperature, and passive-scalar error norms for the manufactured low-Mach-flow solution using an alternative solver configuration.'
+    requirement = 'The system shall compute the velocity, temperature, and passive-scalar error norms for the manufactured low-Mach-flow solution using characteristic subcycling.'
     required_objects = 'NekRSProblem'
   []
 []

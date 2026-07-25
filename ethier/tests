@@ -86,7 +86,7 @@
     max_parallel = 20
     max_time = 300
 
-    requirement = 'The system shall compute the Ethier velocity, pressure, temperature, and passive-scalar error norms using adaptive time stepping while maintaining the specified target Courant number.'
+    requirement = 'The system shall compute the Ethier velocity, pressure, temperature, and passive-scalar error norms using adaptive time stepping with a prescribed target Courant number.'
     required_objects = 'NekRSProblem'
   []
 
@@ -112,7 +112,7 @@
     max_parallel = 20
     max_time = 300
 
-    requirement = 'The system shall compute the Ethier velocity, pressure, temperature, and passive-scalar error norms using convective advection and a block velocity solver without characteristic subcycling.'
+    requirement = 'The system shall compute the Ethier velocity, pressure, temperature, and passive-scalar error norms using convective advection, a block velocity solver, and a projection pressure initial guess.'
     required_objects = 'NekRSProblem'
   []
 
@@ -138,7 +138,7 @@
     max_parallel = 20
     max_time = 300
 
-    requirement = 'The system shall compute the Ethier velocity and passive-scalar error norms with the temperature solver disabled and report the expected solver statuses.'
+    requirement = 'The system shall compute the Ethier velocity, pressure, and passive-scalar error norms with the temperature solver disabled.'
     required_objects = 'NekRSProblem'
   []
 
@@ -150,7 +150,7 @@
 
     max_parallel = 20
 
-    requirement = 'The system shall compute the Ethier passive-scalar error norm in a scalar-only simulation and report the expected solver statuses.'
+    requirement = 'The system shall compute the Ethier passive-scalar error norm in a scalar-only simulation.'
     required_objects = 'NekRSProblem'
   []
 

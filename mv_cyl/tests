@@ -8,7 +8,7 @@
     max_parallel = 20
     max_time = 300
 
-    requirement = 'The system shall compute the average temperature, volume, thermodynamic pressure, and thermodynamic-pressure time derivative for an isentropically compressing and expanding cylinder.'
+    requirement = 'The system shall compute the average temperature, volume, thermodynamic pressure, and thermodynamic-pressure time derivative for an isentropically compressing and expanding cylinder using prescribed mesh motion.'
     required_objects = 'NekRSProblem'
   []
 
@@ -21,7 +21,7 @@
     max_parallel = 20
     max_time = 300
 
-    requirement = 'The system shall compute the average temperature, volume, thermodynamic pressure, and thermodynamic-pressure time derivative for an isentropically compressing and expanding cylinder using an alternative solver configuration.'
+    requirement = 'The system shall compute the average temperature, volume, thermodynamic pressure, and thermodynamic-pressure time derivative for an isentropically compressing and expanding cylinder using characteristic subcycling.'
     required_objects = 'NekRSProblem'
   []
 
@@ -34,7 +34,7 @@
     max_parallel = 20
     max_time = 300
 
-    requirement = 'The system shall compute the average temperature, volume, thermodynamic pressure, and thermodynamic-pressure time derivative for an isentropically compressing and expanding cylinder using an alternative solver configuration.'
+    requirement = 'The system shall compute the average temperature, volume, thermodynamic pressure, and thermodynamic-pressure time derivative for an isentropically compressing and expanding cylinder using characteristic subcycling and a projection-initialized mesh-velocity solver.'
     required_objects = 'NekRSProblem'
   []
 
@@ -47,7 +47,7 @@
     max_parallel = 20
     max_time = 300
 
-    requirement = 'The system shall compute the average temperature, volume, thermodynamic pressure, and thermodynamic-pressure time derivative for an isentropically compressing and expanding cylinder using an alternative solver configuration.'
+    requirement = 'The system shall compute the average temperature, volume, thermodynamic pressure, and thermodynamic-pressure time derivative for a rotated, isentropically compressing and expanding cylinder using prescribed mesh motion.'
     required_objects = 'NekRSProblem'
   []
 
@@ -60,7 +60,7 @@
     max_parallel = 20
     max_time = 300
 
-    requirement = 'The system shall compute the average temperature, volume, thermodynamic pressure, and thermodynamic-pressure time derivative for an isentropically compressing and expanding cylinder using an alternative solver configuration.'
+    requirement = 'The system shall compute the average temperature, volume, thermodynamic pressure, and thermodynamic-pressure time derivative for a rotated, isentropically compressing and expanding cylinder using a projection-initialized mesh-velocity solver.'
     required_objects = 'NekRSProblem'
   []
 []

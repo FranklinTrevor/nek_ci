@@ -8,7 +8,7 @@
     max_parallel = 20
     max_time = 300
 
-    requirement = 'The system shall compute the velocity error norms for the manufactured shear-layer channel-flow solution.'
+    requirement = 'The system shall compute the velocity error norms for the shear-layer channel solution on an unrotated mesh.'
     required_objects = 'NekRSProblem'
   []
 
@@ -21,7 +21,7 @@
     max_parallel = 20
     max_time = 300
 
-    requirement = 'The system shall compute the velocity error norms for the manufactured shear-layer channel-flow solution using an alternative solver configuration.'
+    requirement = 'The system shall compute the velocity error norms for the shear-layer channel solution on a rotated mesh.'
     required_objects = 'NekRSProblem'
   []
 []
