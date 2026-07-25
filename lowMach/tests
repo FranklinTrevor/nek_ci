@@ -1,35 +1,27 @@
 [Tests]
-  [lowMach_cimode1]
+  [low_mach_cimode1]
     type = CSVDiff
     input = nek1.i
     csvdiff = nek_out.csv
     cli_args = '--nekrs-cimode 1'
 
     max_parallel = 20
+    max_time = 300
 
-    requirement = 'The system shall compute the error norms of velocity, temperature and scalar fields with respect to exact solution.'
+    requirement = 'The system shall compute the velocity, temperature, and passive-scalar error norms for the manufactured low-Mach-flow solution.'
     required_objects = 'NekRSProblem'
   []
-  [lowMach_cimode2]
+
+  [low_mach_cimode2]
     type = CSVDiff
     input = nek2.i
     csvdiff = nek_out.csv
     cli_args = '--nekrs-cimode 2'
 
     max_parallel = 20
+    max_time = 300
 
-    requirement = 'The system shall compute the error norms of velocity, temperature and scalar fields with respect to exact solution.'
+    requirement = 'The system shall compute the velocity, temperature, and passive-scalar error norms for the manufactured low-Mach-flow solution using an alternative solver configuration.'
     required_objects = 'NekRSProblem'
   []
-  #[lowMach_cimode3]
-  #  type = CSVDiff
-  #  input = nek3.i
-  #  csvdiff = nek_out.csv
-  #  cli_args = '--nekrs-cimode 3'
-  #
-  #  max_parallel = 20
-  #
-  #  requirement = 'The system shall compute the error norms of velocity, temperature and scalar fields with respect to exact solution.'
-  #  required_objects = 'NekRSProblem'
-  #[]
 []

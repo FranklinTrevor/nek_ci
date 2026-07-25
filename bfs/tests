@@ -5,10 +5,9 @@
     csvdiff = nek_out.csv
     cli_args = '--nekrs-cimode 1'
 
-    # mesh only contains 60 elements
     max_parallel = 10
 
-    requirement = 'The system shall compute the skin friction coefficient and compare it against experimental values.'
+    requirement = 'The system shall compute the backward-facing-step skin-friction coefficient and compare it against reference experimental data.'
     required_objects = 'NekRSProblem'
   []
 []

@@ -6,10 +6,12 @@
     cli_args = '--nekrs-cimode 1'
 
     max_parallel = 20
+    max_time = 300
 
-    requirement = 'The system shall compute the error norms of velocity and compare against exact solution of Stokes flow.'
+    requirement = 'The system shall compute the velocity error norms for the manufactured channel-flow solution.'
     required_objects = 'NekRSProblem'
   []
+
   [channel_cimode2]
     type = CSVDiff
     input = nek2.i
@@ -17,8 +19,9 @@
     cli_args = '--nekrs-cimode 2'
 
     max_parallel = 20
+    max_time = 300
 
-    requirement = 'The system shall compute the error norms of velocity and compare against exact solution of Stokes flow.'
+    requirement = 'The system shall compute the velocity error norms for the manufactured channel-flow solution using an alternative solver configuration.'
     required_objects = 'NekRSProblem'
   []
 []

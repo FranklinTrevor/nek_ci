@@ -1,16 +1,14 @@
 [Tests]
-  [turbPipePeriodic]
+  [turb_pipe_periodic]
     type = CSVDiff
     input = nek.i
     csvdiff = nek_out.csv
     cli_args = '--nekrs-cimode 1'
 
-    # mesh only contains 60 elements
     max_parallel = 20
+    max_time = 600
 
-    max_time = 600 
-
-    requirement = 'The system shall reproduce the wall stress for turbulent pipe flow.'
-    capabilities = 'nekrs'
+    requirement = 'The system shall compute the friction velocity for fully developed turbulent flow in a periodic pipe and compare it against reference data.'
+    required_objects = 'NekRSProblem'
   []
 []

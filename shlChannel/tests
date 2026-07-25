@@ -1,24 +1,27 @@
 [Tests]
-  [channel_cimode1]
+  [shl_channel_cimode1]
     type = CSVDiff
     input = nek1.i
     csvdiff = nek_out.csv
     cli_args = '--nekrs-cimode 1'
 
     max_parallel = 20
+    max_time = 300
 
-    requirement = 'The system shall compute the error norms of velocity and compare against exact solution.'
-    capabilities = 'nekrs'
+    requirement = 'The system shall compute the velocity error norms for the manufactured shear-layer channel-flow solution.'
+    required_objects = 'NekRSProblem'
   []
-  [channel_cimode2]
+
+  [shl_channel_cimode2]
     type = CSVDiff
     input = nek2.i
     csvdiff = nek_out.csv
     cli_args = '--nekrs-cimode 2'
 
     max_parallel = 20
+    max_time = 300
 
-    requirement = 'The system shall compute the error norms of velocity and compare against exact solution.'
-    capabilities = 'nekrs'
+    requirement = 'The system shall compute the velocity error norms for the manufactured shear-layer channel-flow solution using an alternative solver configuration.'
+    required_objects = 'NekRSProblem'
   []
 []

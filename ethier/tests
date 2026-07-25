@@ -8,9 +8,10 @@
     max_parallel = 20
     max_time = 300
 
-    requirement = 'The system shall compute the error norms of velocity, temperature, and scalar fields with respect to exact solution from Ethier, and the number of iterations.'
+    requirement = 'The system shall compute the Ethier velocity, pressure, temperature, and passive-scalar error norms using a block velocity solver with characteristic subcycling.'
     required_objects = 'NekRSProblem'
   []
+
   [ethier_cimode3]
     type = CSVDiff
     input = nek3.i
@@ -20,9 +21,10 @@
     max_parallel = 20
     max_time = 300
 
-    requirement = 'The system shall compute the error norms of velocity, temperature, and scalar fields with respect to exact solution from Ethier, and the number of iterations.'
+    requirement = 'The system shall compute the Ethier velocity, pressure, temperature, and passive-scalar error norms using projection initial guesses and the SEMFEM pressure preconditioner.'
     required_objects = 'NekRSProblem'
   []
+
   [ethier_cimode4]
     type = CSVDiff
     input = nek4.i
@@ -32,9 +34,10 @@
     max_parallel = 20
     max_time = 300
 
-    requirement = 'The system shall compute the error norms of velocity, temperature, and scalar fields with respect to exact solution from Ethier, and the number of iterations.'
+    requirement = 'The system shall compute the Ethier velocity, pressure, temperature, and passive-scalar error norms over an extended simulation using a block velocity solver, characteristic subcycling, and projection initial guesses.'
     required_objects = 'NekRSProblem'
   []
+
   [ethier_cimode5]
     type = CSVDiff
     input = nek5.i
@@ -44,9 +47,10 @@
     max_parallel = 20
     max_time = 300
 
-    requirement = 'The system shall compute the error norms of velocity, temperature, and scalar fields with respect to exact solution from Ethier, and the number of iterations.'
+    requirement = 'The system shall compute the Ethier velocity, pressure, temperature, and passive-scalar error norms on a moving mesh using a block velocity solver without characteristic subcycling.'
     required_objects = 'NekRSProblem'
   []
+
   [ethier_cimode6]
     type = CSVDiff
     input = nek6.i
@@ -56,9 +60,10 @@
     max_parallel = 20
     max_time = 300
 
-    requirement = 'The system shall compute the error norms of velocity, temperature, and scalar fields with respect to exact solution from Ethier, and the number of iterations.'
+    requirement = 'The system shall compute the Ethier velocity, pressure, temperature, and passive-scalar error norms on a moving mesh using a block velocity solver with characteristic subcycling.'
     required_objects = 'NekRSProblem'
   []
+
   [ethier_cimode7]
     type = CSVDiff
     input = nek7.i
@@ -68,9 +73,10 @@
     max_parallel = 20
     max_time = 300
 
-    requirement = 'The system shall compute the error norms of velocity, temperature, and scalar fields with respect to exact solution from Ethier, and the number of iterations.'
+    requirement = 'The system shall compute the Ethier velocity, pressure, temperature, and passive-scalar error norms using projection initial guesses and a Jacobi pressure preconditioner.'
     required_objects = 'NekRSProblem'
   []
+
   [ethier_cimode8]
     type = CSVDiff
     input = nek8.i
@@ -80,9 +86,10 @@
     max_parallel = 20
     max_time = 300
 
-    requirement = 'The system shall compute the error norms of velocity, temperature, and scalar fields with respect to exact solution from Ethier, the number of iterations, and CFL.'
+    requirement = 'The system shall compute the Ethier velocity, pressure, temperature, and passive-scalar error norms using adaptive time stepping while maintaining the specified target Courant number.'
     required_objects = 'NekRSProblem'
   []
+
   [ethier_cimode9]
     type = CSVDiff
     input = nek9.i
@@ -92,9 +99,10 @@
     max_parallel = 20
     max_time = 300
 
-    requirement = 'The system shall compute the error norms of velocity, temperature, and scalar fields with respect to exact solution from Ethier, and the number of iterations.'
+    requirement = 'The system shall compute the Ethier velocity, pressure, temperature, and passive-scalar error norms using convective advection, a block velocity solver, characteristic subcycling, and a projection pressure initial guess.'
     required_objects = 'NekRSProblem'
   []
+
   [ethier_cimode10]
     type = CSVDiff
     input = nek10.i
@@ -104,9 +112,10 @@
     max_parallel = 20
     max_time = 300
 
-    requirement = 'The system shall compute the error norms of velocity, temperature, and scalar fields with respect to exact solution from Ethier, and the number of iterations.'
+    requirement = 'The system shall compute the Ethier velocity, pressure, temperature, and passive-scalar error norms using convective advection and a block velocity solver without characteristic subcycling.'
     required_objects = 'NekRSProblem'
   []
+
   [ethier_cimode11]
     type = CSVDiff
     input = nek11.i
@@ -116,9 +125,10 @@
     max_parallel = 20
     max_time = 300
 
-    requirement = 'The system shall compute the error norms of velocity, temperature, and scalar fields with respect to exact solution from Ethier, and the number of iterations.'
+    requirement = 'The system shall compute the Ethier velocity, pressure, temperature, and passive-scalar error norms using a block velocity solver and a Chebyshev-accelerated multigrid pressure smoother.'
     required_objects = 'NekRSProblem'
   []
+
   [ethier_cimode12]
     type = CSVDiff
     input = nek12.i
@@ -128,20 +138,22 @@
     max_parallel = 20
     max_time = 300
 
-    requirement = 'The system shall compute the error norms of velocity and scalar field with respect to exact solution from Ethier, and solvers status.'
+    requirement = 'The system shall compute the Ethier velocity and passive-scalar error norms with the temperature solver disabled and report the expected solver statuses.'
     required_objects = 'NekRSProblem'
   []
+
   [ethier_cimode13]
     type = CSVDiff
     input = nek13.i
     csvdiff = nek_out.csv
     cli_args = '--nekrs-cimode 13'
-  
+
     max_parallel = 20
-  
-    requirement = 'The system shall compute the error norms of the scalar field with respect to exact solution from Ethier, and solvers status.'
+
+    requirement = 'The system shall compute the Ethier passive-scalar error norm in a scalar-only simulation and report the expected solver statuses.'
     required_objects = 'NekRSProblem'
   []
+
   [ethier_cimode14]
     type = CSVDiff
     input = nek14.i
@@ -151,40 +163,7 @@
     max_parallel = 20
     max_time = 300
 
-    requirement = 'The system shall compute the error norms of velocity, temperature, and scalar fields with respect to exact solution from Ethier, and the number of iterations.'
+    requirement = 'The system shall compute the Ethier velocity, pressure, temperature, and passive-scalar error norms using a block velocity solver and an additive overlapping Schwarz multigrid pressure smoother.'
     required_objects = 'NekRSProblem'
   []
-  #[ethier_cimode16]
-  #  type = CSVDiff
-  #  input = nek16.i
-  #  csvdiff = nek_out.csv
-  #  cli_args = '--nekrs-cimode 16'
-  #
-  #  max_parallel = 20
-  #
-  #  requirement = 'The system shall compute the error norms of velocity, temperature, and scalar fields with respect to exact solution from Ethier.'
-  #  required_objects = 'NekRSProblem'
-  #[]
-  #[ethier_cimode17]
-  #  type = CSVDiff
-  #  input = nek17.i
-  #  csvdiff = nek_out.csv
-  #  cli_args = '--nekrs-cimode 17'
-  #
-  #  max_parallel = 20
-  #
-  #  requirement = 'The system shall compute the error norms of velocity, temperature, and scalar fields with respect to exact solution from Ethier.'
-  #  required_objects = 'NekRSProblem'
-  #[]
-  #[ethier_cimode18]
-  #  type = CSVDiff
-  #  input = nek18.i
-  #  csvdiff = nek_out.csv
-  #  cli_args = '--nekrs-cimode 18'
-  # 
-  #  max_parallel = 20
-  #
-  #  requirement = 'The system shall compute the error norms of velocity, temperature, and scalar fields with respect to exact solution from Ethier.'
-  #  required_objects = 'NekRSProblem'
-  #[]
 []
