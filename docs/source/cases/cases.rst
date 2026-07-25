@@ -1,15 +1,25 @@
 CI Test Cases
 =============
 
+Verification Cases
+------------------
+
 .. toctree::
    :maxdepth: 1
 
    ethier
-   ktauChannel
    lowMach
    channel
    shlChannel
-   turbPipePeriodic
    mv_cyl
    conj_ht
+
+Validation Cases
+----------------
+
+.. toctree::
+   :maxdepth: 1
+
+   ktauChannel
+   turbPipePeriodic
    bfs

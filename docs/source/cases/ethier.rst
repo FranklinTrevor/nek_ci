@@ -1,16 +1,16 @@
 Ethier
-======
+=======
 
 .. _ethier:
 
-This case is adopted from the non-trivial, fictitious, exact solution for the 3D incompressible Navier-Stokes equation devised by Ethier et al. [Ethier1994]_ to benchmark incompressible CFD solvers.
-Further, the solution from Ethier et al. is also adopted to test the passive scalar solvers in NekRS.
-This can be done by considering the x-component of velocity as the transported passive scalar and the pressure term in the momentum equation as the source term, which makes the passive scalar equation identical to the x-momentum equation.
-Since the exact solution is known in both time and space, the incompressible and/or passive scalar solvers can be run for only a few steps to evaluate solver accuracy, greatly minimizing the computational cost of each test.
-Therefore, the *ethier* test case is used to evaluate several modules and components of the NekRS code, enumerated in Table 1.
+This case is adopted from the non-trivial, exact solution of the three-dimensional incompressible Navier--Stokes equations developed by Ethier and Steinman [Ethier1994]_ for benchmarking incompressible CFD solvers.
+The Ethier solution is also used to verify the passive scalar solvers in NekRS.
+This is accomplished by selecting the x-component of the velocity field as the transported passive scalar and using the pressure term from the momentum equation as the source term, making the passive scalar transport equation identical to the x-momentum equation.
+Because the analytical solution is known throughout the domain and for all times, both the incompressible flow and passive scalar solvers can be verified using only a few time steps, minimizing the computational cost of each regression test.
+Consequently, the *ethier* case is used to verify several capabilities of NekRS through multiple CI modes.
 
 The problem is set up in a :math:`[-1,1]` cube domain with Dirichlet boundary conditions assigned for the velocity solver and Dirichlet and Neumann boundary conditions assigned for the passive scalars :math:`s_1` and :math:`s_2`, respectively.
-The boundary conditions are obtained from the exact solution from Ethier et al. [Ethier1994]_, given as,
+The boundary conditions are obtained from the Ethier analytical solution [Ethier1994]_, given as,
 
 .. math::
 
@@ -23,24 +23,23 @@ The boundary conditions are obtained from the exact solution from Ethier et al. 
     & +  \left. 2 sin(az+dx)cos(ay+dz)e^{a(x+y)} \right]e^{-2d^2t}
 
 where :math:`a,d` are user-specified parameters, :math:`\{x,y,z\}` are the coordinate locations, :math:`\{u,v,w\}` are the velocity components, :math:`p` is the pressure, and :math:`t` is the time.
-Note that, for the passive scalar solver tests, the transported variable is :math:`u`.
+For the passive scalar verification tests, the transported variable is the x-component of velocity, :math:`u`.
 
-The solution fields are :math:`\phi=\{u,p,s_1,s_2\}` corresponding to the x-velocity, pressure, scalars 0 and 1, respectively.
+The solution fields are :math:`\phi=\{u,p,s_1,s_2\}`, corresponding to the x-velocity, pressure, passive scalars 1 and 2, respectively.
 
-For all CI modes analyzed, the :math:`L_2`-norm was calculated for different polynomial orders :math:`N`, for the Navier-Stokes solver for the x-component of velocity, pressure, and from the passive scalar solver.
-Figures presented below show the error decay trend for the CI tests for this case.
-The trend confirms spectral decay of errors and demonstrates consistency and accuracy of both the flow and passive scalar solvers.
-To evaluate the solver performance, the number of iterations required for the convergence of the x-velocity, pressure, and passive scalars is also included in the tests.
-Specific *NekRS* modules tested for each CI case are mentioned below.
+For all CI modes, volume-integrated error norms were computed for multiple polynomial orders :math:`N` using the velocity, pressure, and passive scalar fields.
+The figures presented below demonstrate the spectral convergence of the solution as the polynomial order increases, confirming the accuracy and consistency of both the flow and passive scalar solvers.
+To assess solver performance, the number of iterations required for the convergence of the velocity, pressure, and passive scalar solvers is also included in the tests.
+The specific NekRS capabilities verified by each CI mode are described below.
 
 CI Mode 2
 ---------
 
 This CI mode verifies the correct functioning of the following capabilities of NekRS:
 
-  * Incompressible Navier-Stokes and Passive Scalar solvers.
-  * Subcycling.
-  * Accelerated Conjugate Projection for the initial guess of the pressure.
+  * Incompressible Navier-Stokes and passive scalar solvers.
+  * Block velocity solver.
+  * Characteristic subcycling.
 
 Errors were computed at :math:`t=0.06` and are shown in :numref:`fig:ethier_2`.
 
@@ -59,6 +58,7 @@ CI Mode 3
 This CI mode verifies the correct functioning of:
 
   * Velocity and pressure projection.
+  * SEMFEM pressure preconditioner.
 
 Errors were computed at :math:`t=0.06` and are shown in :numref:`fig:ethier_3`.
 
@@ -74,10 +74,11 @@ Errors were computed at :math:`t=0.06` and are shown in :numref:`fig:ethier_3`.
 CI Mode 4
 ---------
 
-This CI mode tests that both features verified in CI modes 2 and 3 work together correctly. These are:
+This CI mode verifies the combined operation of the following capabilities:
 
-  * Incompressible Navier-Stokes and Passive Scalar solvers.
-  * Subcycling.
+  * Incompressible Navier-Stokes and passive scalar solvers.
+  * Block velocity solver.
+  * Characteristic subcycling.
   * Velocity and pressure projection.
 
 Errors were computed at :math:`t=0.2` and are shown in :numref:`fig:ethier_4`.
@@ -96,7 +97,8 @@ CI Mode 5
 
 This CI mode tests:
 
-  * Moving mesh.
+  * Moving mesh formulation.
+  * Block velocity solver.
 
 Errors were computed at :math:`t=0.2` and are shown in :numref:`fig:ethier_5`.
 
@@ -114,8 +116,9 @@ CI Mode 6
 
 This CI mode tests:
 
-  * Moving mesh.
-  * Subcycling.
+  * Moving mesh formulation.
+  * Block velocity solver.
+  * Characteristic subcycling.
 
 Errors were computed at :math:`t=0.2` and are shown in :numref:`fig:ethier_6`.
 
@@ -134,7 +137,7 @@ CI Mode 7
 This CI mode tests:
 
   * Velocity and pressure projection.
-  * Jacobi preconditioner for the pressure solver.
+  * Jacobi pressure preconditioner.
 
 Errors were computed at :math:`t=0.012` and are shown in :numref:`fig:ethier_7`.
 
@@ -152,10 +155,10 @@ CI Mode 8
 
 This CI mode tests:
 
-  * Velocity and pressure projection.
-  * Variable time-step.
+  * Pressure projection.
+  * Adaptive time stepping.
 
-This CI mode also tests that the final CFL number is below the target number, and the total number of time steps.
+This CI mode also verifies that the final CFL number remains below the specified target value and that the expected number of time steps is taken.
 Errors were computed at :math:`t=0.2` and are shown in :numref:`fig:ethier_8`.
 
 .. _fig:ethier_8:
@@ -171,10 +174,11 @@ CI Mode 9
 ---------
 
 This CI mode tests:
-  
-  * Subcycling.
-  * No dealiasing.
-  * Pressure projection.
+
+  * Convective advection formulation without dealiasing.
+  * Block velocity solver.
+  * Characteristic subcycling.
+  * Velocity and pressure projection.
 
 Errors were computed at :math:`t=0.06` and are shown in :numref:`fig:ethier_9`.
 
@@ -192,8 +196,9 @@ CI Mode 10
 
 This CI mode tests:
 
-  * No dealiasing.
-  * Pressure projection.
+  * Convective advection formulation without dealiasing.
+  * Block velocity solver.
+  * Velocity and pressure projection.
 
 Errors were computed at :math:`t=0.06` and are shown in :numref:`fig:ethier_10`.
 
@@ -211,8 +216,9 @@ CI Mode 11
 
 This CI mode tests:
 
-  * Chebyshev and Jacobi pressure multigrid smoother.
-  * Subcycling.
+  * Chebyshev-accelerated damped-Jacobi pressure multigrid smoother.
+  * Block velocity solver.
+  * Characteristic subcycling.
   * Pressure projection.
 
 Errors were computed at :math:`t=0.06` and are shown in :numref:`fig:ethier_11`.
@@ -231,10 +237,10 @@ CI Mode 12
 
 This CI mode tests:
 
-  * Passive scalar 0 turned off.
+  * Passive scalar 0 disabled.
 
 Errors were computed at :math:`t=0.06` and are shown in :numref:`fig:ethier_12`.
-Additionally, the test verifies that the passive scalar 0 is deactivated.
+Additionally, the test verifies that passive scalar 0 is disabled while passive scalar 1 continues to be solved correctly.
 
 .. _fig:ethier_12:
 .. figure:: figs/ethier_12.png
@@ -250,8 +256,9 @@ CI Mode 14
 
 This CI mode tests:
 
-  * Pressure multigrid smoother ASM with additive V-cycle.
-  * Subcycling.
+  * Additive overlapping Schwarz pressure multigrid smoother.
+  * Block velocity solver.
+  * Characteristic subcycling.
   * Pressure projection.
 
 Errors were computed at :math:`t=0.06` and are shown in :numref:`fig:ethier_14`.

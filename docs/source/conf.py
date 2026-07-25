@@ -2,9 +2,9 @@
 
 # -- Project information
 
-project = 'Nek CI docs'
-copyright = '2025, nsaini'
-author = 'nsaini'
+project = 'Test Suite for NekRS Module in Cardinal'
+copyright = '2026, UChicago Argonne, LLC'
+author = 'Cardinal Development Team'
 
 release = '0.1'
 version = '0.1.0'

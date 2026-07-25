@@ -3,33 +3,34 @@ Poiseuille Flow (Traction Boundaries)
 
 .. _shlChannel:
 
-This case is designed to specifically test the traction boundary condition in NekRS.
-The test comprises Poiseuille flow simulation in a half-channel of non-dimensional height, $H=1$, and periodic boundary conditions in the streamwise (x) and lateral (z) direction.
-Traction boundary condition is applied at :math:`y=-1` and symmetry at :math:`y=0`.
-From the momentum balance at steady state,
+This case verifies the traction boundary condition implementation in NekRS using fully developed Poiseuille flow in a half-channel.
+The nondimensional channel height is :math:`H=1`, and periodic boundary conditions are imposed in the streamwise (:math:`x`) and spanwise (:math:`z`) directions.
+A traction boundary condition is imposed at :math:`y=-1`, while a symmetry boundary condition is imposed at :math:`y=0`.
+The steady-state momentum equation is
 
 .. math::
 
     \frac{1}{Re} \frac{d^2 u}{d y^2} = \frac{dp}{dx}
 
-The steady state non-dimensional velocity is given by,
+The analytical velocity profile is
 
 .. math::
-  
-  u(y) = 1.5 * (1.0 - y^2)
 
-To drive the flow in streamwise direction, pressure gradient forcing term is applied based on the above solution,
+  u(y) = 1.5 \left(1-y^2\right)
+
+The corresponding streamwise body force is
 
 .. math::
 
   f_x = \frac{3}{Re}
 
-while the traction boundary condition is given by,
+and the traction boundary condition is
 
 .. math::
 
-  \tau_w = \left.\frac{1}{Re} \frac{du}{dy}\right|_{y=-1} = - \frac{3}{Re}
+  \tau_w = \left.\frac{1}{Re} \frac{du}{dy}\right|_{y=-1} = -\frac{3}{Re}
 
-Two CI tests are evaluated for this case.
-CI index 1 corresponds to the case as described above and CI 2 corresponds to the geometry rotated at a :math:`45^{\circ}` angle.
-Both tests evaluate the :math:`L_2`-norm of velocity against the exact Poiseuille flow solution.
+Two CI modes are provided for this case.
+CI mode 1 uses the channel geometry described above.
+CI mode 2 verifies the same solution on a geometry rotated by :math:`45^\circ`.
+Both CI modes are qualified by evaluating the volume-integrated error norm of the velocity field with respect to the analytical Poiseuille solution.

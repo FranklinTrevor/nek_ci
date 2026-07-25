@@ -1,20 +1,40 @@
 References
 ==========
 
-.. .. rubric:: References
+.. [Driver1985] Driver, D. M., and H. L. Seegmiller.
+   “Features of a Reattaching Turbulent Shear Layer in Divergent Channel
+   Flow.” *AIAA Journal*, vol. 23, no. 2, 1985, pp. 163–171.
 
-.. [Driver1985] Driver, David M., and H. Lee Seegmiller. "Features of a reattaching turbulent shear layer in divergent channelflow." AIAA journal 23.2 (1985): 163-171.
+.. [Ethier1994] Ethier, C. R., and D. A. Steinman.
+   “Exact Fully 3D Navier–Stokes Solutions for Benchmarking.”
+   *International Journal for Numerical Methods in Fluids*, vol. 19, no. 5,
+   1994, pp. 369–375.
 
-.. [Ethier1994] Ethier, C. Ross, and D. A. Steinman. "Exact fully 3D Navier–Stokes solutions for benchmarking." International Journal for Numerical Methods in Fluids 19.5 (1994): 369-375.
+.. [Khoury2013] El Khoury, G. K., P. Schlatter, A. Noorani, P. F. Fischer,
+   G. Brethouwer, and A. V. Johansson.
+   “Direct Numerical Simulation of Turbulent Pipe Flow at Moderately High
+   Reynolds Numbers.” *Flow, Turbulence and Combustion*, vol. 91, 2013,
+   pp. 475–495.
 
-.. [Khoury2013] El Khoury, George K., et al. "Direct numerical simulation of turbulent pipe flow at moderately high Reynolds numbers." Flow, turbulence and combustion 91 (2013): 475-495.
+.. [Lee2015] Lee, M., and R. D. Moser.
+   “Direct Numerical Simulation of Turbulent Channel Flow up to
+   :math:`Re_{\tau} \approx 5200`.”
+   *Journal of Fluid Mechanics*, vol. 774, 2015, pp. 395–415.
 
-.. [Lee2015] Lee, Myoungkyu, and Robert D. Moser. "Direct numerical simulation of turbulent channel flow up to." Journal of fluid mechanics 774 (2015): 395-415.
+.. [Stolz2005] Stolz, S., P. Schlatter, and L. Kleiser.
+   “High-Pass Filtered Eddy-Viscosity Models for Large-Eddy Simulations of
+   Transitional and Turbulent Flow.”
+   *Physics of Fluids*, vol. 17, no. 6, 2005.
 
-.. [Stolz2005] Stolz, S., Philipp Schlatter, and L. Kleiser. "High-pass filtered eddy-viscosity models for large-eddy simulations of transitional and turbulent flow." Physics of fluids 17.6 (2005).
+.. [Tombo1997] Tomboulides, A. G., J. C. Y. Lee, and S. A. Orszag.
+   “Numerical Simulation of Low Mach Number Reactive Flows.”
+   *Journal of Scientific Computing*, vol. 12, no. 2, 1997, pp. 139–167.
 
-.. [Tombo1997] Tomboulides, A. G., J. C. Y. Lee, and S. A. Orszag. "Numerical simulation of low Mach number reactive flows." Journal of Scientific Computing 12 (1997): 139-167.
+.. [Tombo1998] Tomboulides, A. G., and S. A. Orszag.
+   “A Quasi-Two-Dimensional Benchmark Problem for Low Mach Number
+   Compressible Codes.”
+   *Journal of Computational Physics*, vol. 146, no. 2, 1998, pp. 691–706.
 
-.. [Tombo1998] Tomboulides, Ananias G., and Steven A. Orzag. "A quasi-two-dimensional benchmark problem for low Mach number compressible codes." Journal of Computational Physics 146.2 (1998): 691-706.
-
-.. [Tombo2024] Tomboulides, Ananias, Nadish Saini, Dillon Shaver, Aleksandr Obabko, Haomin Yuan, Elia Merzari, and Paul Fischer. "A Robust Spectral Element Implementation of the K–Τ Rans Model in Nek5000/Nekrs." *Available at SSRN 4785448.* (2024)
+.. [Tombo2024] Tomboulides, A., Saini, N., Shaver, D. R., Obabko, A. V., Yuan, H.,
+   Merzari, E., & Fischer, P. F. (2025). "A robust spectral element implementation of the
+   :math:`k-\tau` RANS model in Nek5000/NekRS. International Journal of Heat and Fluid Flow, 112, 109679.

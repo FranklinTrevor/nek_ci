@@ -3,26 +3,28 @@ Turbulent Channel Flow (RANS)
 
 .. _ktauChannel:
 
-The case comprises turbulent flow in an infinite half-channel at Reynolds number, :math:`Re=43500`, based on the bulk velocity, :math:`U_b`, and half-channel width, :math:`L`, as follows,
+This case verifies the standard :math:`k`-:math:`\tau` Reynolds-averaged Navier--Stokes (RANS) turbulence model [Tombo2024]_ using fully developed turbulent flow in an infinite half-channel.
+The bulk Reynolds number is :math:`Re=43500`, based on the bulk velocity, :math:`U_b`, and the half-channel width, :math:`L`,
 
 .. math::
-  
+
   Re = \frac{U_b L}{\nu}
 
 where :math:`\nu` is the kinematic viscosity.
-The simulation is performed using the standard :math:`k`-:math:`\tau` RANS model [Tombo2024]_, which is the default two-equation RANS model in NekRS.
-The corresponding friction Reynolds number :math:`Re_\tau`, based on the friction velocity :math:`u_\tau`, is approximately 2000, and calculated as follows,
+The corresponding friction Reynolds number, based on the friction velocity :math:`u_\tau`, is approximately 2000 and is defined as
 
 .. math::
 
   Re_\tau = \frac{u_\tau L}{\nu}
 
+where
+
 .. math::
-  
+
   u_\tau = \sqrt{\frac{\tau_w}{\rho}}
 
-where :math:`\tau_w` is the computed wall shear stress, and :math:`\rho` is the density.
-The case is benchmarked by evaluating friction velocity against the widely accepted DNS data by Lee et al. [Lee2015]_.
+Here, :math:`\tau_w` is the computed wall shear stress and :math:`\rho` is the fluid density.
+The CI test is qualified by comparing the computed friction velocity with the direct numerical simulation (DNS) reference of Lee *et al.* [Lee2015]_ using
 
 .. math::
 
@@ -32,5 +34,4 @@ where
 
 .. math::
 
-  u_{\tau_{DNS}} = 4.58 \times 10^{-2}
-
+  u_{\tau_{DNS}} = 4.58 \times 10^{-2}.
