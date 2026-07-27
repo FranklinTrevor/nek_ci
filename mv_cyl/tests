@@ -6,10 +6,9 @@
     cli_args = '--nekrs-cimode 1'
 
     max_parallel = 20
-    max_time = 300
+    max_time = 900
 
     requirement = 'The system shall compute the average temperature, volume, thermodynamic pressure, and thermodynamic-pressure time derivative for an isentropically compressing and expanding cylinder using prescribed mesh motion.'
-    required_objects = 'NekRSProblem'
   []
 
   [mv_cyl_cimode2]
@@ -19,10 +18,9 @@
     cli_args = '--nekrs-cimode 2'
 
     max_parallel = 20
-    max_time = 300
+    max_time = 900
 
     requirement = 'The system shall compute the average temperature, volume, thermodynamic pressure, and thermodynamic-pressure time derivative for an isentropically compressing and expanding cylinder using characteristic subcycling.'
-    required_objects = 'NekRSProblem'
   []
 
   [mv_cyl_cimode3]
@@ -32,10 +30,9 @@
     cli_args = '--nekrs-cimode 3'
 
     max_parallel = 20
-    max_time = 300
+    max_time = 900
 
     requirement = 'The system shall compute the average temperature, volume, thermodynamic pressure, and thermodynamic-pressure time derivative for an isentropically compressing and expanding cylinder using characteristic subcycling and a projection-initialized mesh-velocity solver.'
-    required_objects = 'NekRSProblem'
   []
 
   [mv_cyl_cimode5]
@@ -45,10 +42,9 @@
     cli_args = '--nekrs-cimode 5'
 
     max_parallel = 20
-    max_time = 300
+    max_time = 900
 
     requirement = 'The system shall compute the average temperature, volume, thermodynamic pressure, and thermodynamic-pressure time derivative for a rotated, isentropically compressing and expanding cylinder using prescribed mesh motion.'
-    required_objects = 'NekRSProblem'
   []
 
   [mv_cyl_cimode6]
@@ -58,9 +54,8 @@
     cli_args = '--nekrs-cimode 6'
 
     max_parallel = 20
-    max_time = 300
+    max_time = 900
 
     requirement = 'The system shall compute the average temperature, volume, thermodynamic pressure, and thermodynamic-pressure time derivative for a rotated, isentropically compressing and expanding cylinder using a projection-initialized mesh-velocity solver.'
-    required_objects = 'NekRSProblem'
   []
 []

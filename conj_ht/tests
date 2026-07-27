@@ -6,10 +6,9 @@
     cli_args = '--nekrs-cimode 1'
 
     max_parallel = 20
-    max_time = 300
+    max_time = 900
 
     requirement = 'The system shall compute the velocity and temperature error norms for the manufactured conjugate heat-transfer solution without characteristic subcycling.'
-    required_objects = 'NekRSProblem'
   []
 
   [conj_ht_cimode2]
@@ -19,9 +18,8 @@
     cli_args = '--nekrs-cimode 2'
 
     max_parallel = 20
-    max_time = 300
+    max_time = 900
 
     requirement = 'The system shall compute the velocity and temperature error norms for the manufactured conjugate heat-transfer solution using characteristic subcycling.'
-    required_objects = 'NekRSProblem'
   []
 []

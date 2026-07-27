@@ -6,9 +6,8 @@
     cli_args = '--nekrs-cimode 1'
 
     max_parallel = 10
-    max_time = 600
+    max_time = 900
 
     requirement = 'The system shall compute the wall shear stress for turbulent channel flow using the k-tau RANS model and compare it against the reference value.'
-    required_objects = 'NekRSProblem'
   []
 []

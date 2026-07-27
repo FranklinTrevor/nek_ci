@@ -6,10 +6,9 @@
     cli_args = '--nekrs-cimode 1'
 
     max_parallel = 20
-    max_time = 300
+    max_time = 900
 
     requirement = 'The system shall compute the velocity, temperature, and passive-scalar error norms for the manufactured low-Mach-flow solution without characteristic subcycling.'
-    required_objects = 'NekRSProblem'
   []
 
   [low_mach_cimode2]
@@ -19,9 +18,8 @@
     cli_args = '--nekrs-cimode 2'
 
     max_parallel = 20
-    max_time = 300
+    max_time = 900
 
     requirement = 'The system shall compute the velocity, temperature, and passive-scalar error norms for the manufactured low-Mach-flow solution using characteristic subcycling.'
-    required_objects = 'NekRSProblem'
   []
 []

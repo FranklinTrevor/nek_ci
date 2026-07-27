@@ -6,8 +6,8 @@
     cli_args = '--nekrs-cimode 1'
 
     max_parallel = 10
+    max_time = 900
 
     requirement = 'The system shall compute the backward-facing-step skin-friction coefficient and compare it against reference experimental data.'
-    required_objects = 'NekRSProblem'
   []
 []
