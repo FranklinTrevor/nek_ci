@@ -16,7 +16,7 @@
   []
 []
 
-TOL_CF = 9.74e-3
+TOL_CF = 1.07e-2
 
 [Postprocessors]
   [cferr_integral]

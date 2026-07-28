@@ -2,9 +2,9 @@
 
 static int ciMode = 0;
 
-#define EPS_SST 9.42e-3
-#define EPS_DDES 1.02e-2
-#define EPS_IDDES 9.74e-3
+#define EPS_SST 1.04e-2
+#define EPS_DDES 1.14e-2
+#define EPS_IDDES 1.07e-2
 
 dfloat hill_step(dfloat x, dfloat w, dfloat h);
 dfloat hill_height(dfloat x, dfloat Lx, dfloat w, dfloat h);

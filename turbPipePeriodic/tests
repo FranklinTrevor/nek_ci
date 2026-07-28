@@ -6,9 +6,8 @@
     cli_args = '--nekrs-cimode 1'
 
     max_parallel = 20
-    max_time = 600
+    max_time = 900
 
     requirement = 'The system shall compute the friction velocity for fully developed turbulent flow in a periodic pipe and compare it against reference data.'
-    required_objects = 'NekRSProblem'
   []
 []

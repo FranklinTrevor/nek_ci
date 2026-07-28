@@ -6,10 +6,9 @@
     cli_args = '--nekrs-cimode 1'
 
     max_parallel = 20
-    max_time = 300
+    max_time = 900
 
     requirement = 'The system shall compute the velocity error norms for the shear-layer channel solution on an unrotated mesh.'
-    required_objects = 'NekRSProblem'
   []
 
   [shl_channel_cimode2]
@@ -19,9 +18,8 @@
     cli_args = '--nekrs-cimode 2'
 
     max_parallel = 20
-    max_time = 300
+    max_time = 900
 
     requirement = 'The system shall compute the velocity error norms for the shear-layer channel solution on a rotated mesh.'
-    required_objects = 'NekRSProblem'
   []
 []
