@@ -23,3 +23,4 @@ Validation Cases
    ktauChannel
    turbPipePeriodic
    bfs
+   periodicHill
