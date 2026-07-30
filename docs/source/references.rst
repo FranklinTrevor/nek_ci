@@ -26,6 +26,10 @@ References
    Transitional and Turbulent Flow.”
    *Physics of Fluids*, vol. 17, no. 6, 2005.
 
+.. [Togni2015] Togni, R., Cimarelli, A., & De Angelis, E. (2015).
+   "Physical and scale-by-scale analysis of Rayleigh–Bénard convection".
+   Journal of Fluid Mechanics, 782, 380-404.
+
 .. [Tombo1997] Tomboulides, A. G., J. C. Y. Lee, and S. A. Orszag.
    “Numerical Simulation of Low Mach Number Reactive Flows.”
    *Journal of Scientific Computing*, vol. 12, no. 2, 1997, pp. 139–167.
