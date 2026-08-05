@@ -1,17 +1,17 @@
 [GENERAL]
 polynomialOrder = 7
-#startFrom = "r.fld"+time=0
+startFrom = "r.fld"+time=0
 stopAt = endTime
-endTime = 50
-dt = 5e-02
+endTime = 300
+dt = 5e-03
 timeStepper = tombo2
 
 checkpointControl = simulationTime 
-checkpointInterval = 50
+checkpointInterval = 10
 
 constFlowRate = meanVelocity=1.0 + direction=X
 
-scalars = temperature, k, tau
+scalars = k, tau
 
 [PROBLEMTYPE]
 equation = navierStokes+variableViscosity
@@ -24,13 +24,6 @@ boundaryTypeMap = zeroDirichlet, zeroDirichletY/zeroNeumann
 residualTol = 1e-06
 rho = 1.0
 viscosity = 1/43500. 
-
-[SCALAR TEMPERATURE]
-#solver = none
-boundaryTypeMap = udfDirichlet, zeroNeumann 
-residualTol = 1e-06
-transportCoeff = 1.0
-diffusionCoeff = 1/43500. 
 
 [SCALAR TAU]
 boundaryTypeMap = udfDirichlet, zeroNeumann 
