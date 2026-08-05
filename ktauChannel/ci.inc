@@ -66,7 +66,18 @@ void ciTestErrors(nrs_t *nrs, double time, int tstep)
   const auto areaWall = mesh->surfaceAreaMultiplyIntegrate(o_bidWall, o_tmp);
 
   // https://turbulence.oden.utexas.edu/channel2015/data/LM_Channel_2000_mean_prof.dat
-  const auto utauRef = 4.58794e-02;
+  
+  static bool dimRun = false;
+  platform->par->extract("casedata", "dim", dimRun);
+
+  dfloat utauRef;
+  if (!dimRun){
+    utauRef = 4.58794e-02;
+  }
+  else{
+    utauRef = 0.1996;
+  }
+
   const auto utau = sqrt(std::abs(forces->viscousFriction()[0]) / areaWall);
   const auto utauErr = std::abs((utau - utauRef) / utauRef);
 

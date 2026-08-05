@@ -3,6 +3,12 @@
 #include "ci.inc"
 
 static dfloat rho, mueLam;
+static const dfloat rhoDim = 998; // kg/m^3
+static const dfloat mueDim = 1e-3; // PaS
+static const dfloat uDim = 4.35; // m/s
+static const dfloat lDim = 0.01; // m
+static const dfloat tScale = lDim / uDim;
+static bool dimRun = false;
 
 #ifdef __okl__
 
@@ -41,14 +47,24 @@ void extractLine(nrs_t *nrs, double time)
     const auto yMax = platform->linAlg->max(mesh->Nlocal, mesh->o_y, platform->comm.mpiComm());
 
     if (np) {
-      const auto x0 = 7.0;
-      const auto z0 = 0.5;
+      dfloat x0;
+      dfloat z0;
+      dfloat betaY;
+      if (!dimRun){
+        x0 = 7.0;
+        z0 = 0.5;
+        betaY = 2.2;
+      }
+      else{
+        x0 = 7.0 * lDim;
+        z0 = 0.5 * lDim;
+        betaY = 2.2 * lDim;
+      }
 
       xp.push_back(x0);
       yp.push_back(yMin);
       zp.push_back(z0);
 
-      const auto betaY = 2.2;
       const auto dy = (yMax - yMin) / (np - 1);
       for (int i = 1; i < np - 1; i++) {
         xp.push_back(x0);
@@ -94,24 +110,10 @@ void uservp(double time)
 
   RANSktau::updateProperties();
 
-  dfloat conductivity;
-  platform->options.getArgs("SCALAR00 DIFFUSIVITY", conductivity);
-  const dfloat Pr_t = 0.85;
-  scalarScaledAdd(mesh->Nlocal, conductivity, 1 / Pr_t, RANSktau::o_mue_t(), scalar->o_diffusionCoeff("temperature"));
-
-#if 0
-  if (platform->verbose()) {
-    const dfloat debugNorm = platform->linAlg->weightedNorm2Many(mesh->Nlocal,
-                                                                 1,
-                                                                 nrs->fluid->fieldOffset,
-                                                                 mesh->ogs->o_invDegree,
-                                                                 o_mue_t,
-                                                                 platform->comm.mpiComm());
-    if (platform->comm.mpiRank() == 0) {
-      printf("mue_t norm: %.15e\n", debugNorm);
-    }                                   
+  if (dimRun){
+    platform->linAlg->fill(mesh->Nlocal, rhoDim, nrs->fluid->o_rho); 
+    platform->linAlg->fill(mesh->Nlocal, mueDim, nrs->fluid->o_mue);
   }
-#endif
 }
 
 void UDF_LoadKernels(deviceKernelProperties& kernelInfo)
@@ -127,10 +129,35 @@ void UDF_LoadKernels(deviceKernelProperties& kernelInfo)
 
 void UDF_Setup0(MPI_Comm comm, setupAide &options)
 {
+  platform->par->extract("casedata", "dim", dimRun);
+
   options.getArgs("CI-MODE", ciMode);
   if (ciMode) {
     ciSetup(comm, options);
   }
+
+  if (dimRun){
+    dfloat endTimeNonDim;
+    options.getArgs("endTime", endTimeNonDim);
+    dfloat endTimeDim = endTimeNonDim * tScale;
+    options.setArgs("FINAL TIME", std::to_string(endTimeDim));
+
+    dfloat dtNonDim;
+    options.getArgs("DT", dtNonDim);
+    dfloat dtDim = dtNonDim * tScale;
+    options.setArgs("DT", std::to_string(dtDim));
+
+    dfloat checkpointNonDim;
+    options.getArgs("checkpointInterval", checkpointNonDim);
+    dfloat checkpointDim = checkpointNonDim * tScale;
+    options.setArgs("checkpointInterval", std::to_string(checkpointDim));
+
+    dfloat uBulkNonDim;
+    options.getArgs("meanvelocity", uBulkNonDim);
+    dfloat uBulkDim = uBulkNonDim * uDim;
+    options.setArgs("meanvelocity", std::to_string(uBulkDim));
+  }
+  
 }
 
 void UDF_Setup()
@@ -148,20 +175,40 @@ void UDF_Setup()
   if (platform->options.getArgs("RESTART FILE NAME").empty()) {
     auto& scalar = nrs->scalar;
     for(int n = 0; n < mesh->Nlocal; n++) {
-      U[n + 0 * nrs->fluid->fieldOffset] = 1;
-      U[n + 1 * nrs->fluid->fieldOffset] = 0;
-      U[n + 2 * nrs->fluid->fieldOffset] = 0;
-      s0[n] = 1.0;
-      k[n] = 0.01; 
-      tau[n] = 0.1;
+      if (!dimRun){
+        U[n + 0 * nrs->fluid->fieldOffset] = 1;
+        U[n + 1 * nrs->fluid->fieldOffset] = 0;
+        U[n + 2 * nrs->fluid->fieldOffset] = 0;
+        k[n] = 0.01; 
+        tau[n] = 0.1;
+      } 
+      else{
+        U[n + 0 * nrs->fluid->fieldOffset] = uDim;
+        U[n + 1 * nrs->fluid->fieldOffset] = 0;
+        U[n + 2 * nrs->fluid->fieldOffset] = 0;
+        k[n] = 0.01 * uDim * uDim; 
+        tau[n] = 0.1 * tScale;
+      }
     }
     nrs->fluid->o_U.copyFrom(U.data(), U.size());
-    nrs->scalar->o_solution("temperature").copyFrom(s0.data(), s0.size()); 
     nrs->scalar->o_solution("k").copyFrom(k.data(), k.size()); 
     nrs->scalar->o_solution("tau").copyFrom(tau.data(), tau.size()); 
   }
 
   RANSktau::setup(nrs->scalar->nameToIndex.find("k")->second);
+
+  if (dimRun){
+    auto [x, y, z] = mesh->xyzHost();
+  
+    for(int n = 0; n < mesh->Nlocal; n++){
+      x[n] = x[n]*lDim;
+      y[n] = y[n]*lDim;
+      z[n] = z[n]*lDim;
+    }
+    mesh->o_x.copyFrom(x.data());
+    mesh->o_y.copyFrom(y.data());
+    mesh->o_z.copyFrom(z.data());
+  }
 }
 
 void UDF_ExecuteStep(double time, int tstep)
