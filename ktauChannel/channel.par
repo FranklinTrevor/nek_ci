@@ -2,14 +2,14 @@ userSections = CASEDATA
 
 [GENERAL]
 polynomialOrder = 7
-startFrom = "r.fld"+time=0+U+P+S00+S01
+startFrom = "r.fld"+time=0
 stopAt = endTime
-endTime = 50
-dt = 5e-02
+endTime = 300
+dt = 5e-03
 timeStepper = tombo2
 
 checkpointControl = simulationTime 
-checkpointInterval = 50
+checkpointInterval = 10
 
 constFlowRate = meanVelocity=1.0 + direction=X
 
@@ -26,7 +26,7 @@ boundaryTypeMap = zeroDirichlet, zeroDirichletY/zeroNeumann
 residualTol = 1e-06
 rho = 1.0
 viscosity = 1/43500. 
- 
+
 [SCALAR TAU]
 boundaryTypeMap = udfDirichlet, zeroNeumann 
 residualTol = 1e-08

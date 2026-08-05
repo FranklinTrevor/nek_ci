@@ -12,19 +12,6 @@ static bool dimRun = false;
 
 #ifdef __okl__
 
-@kernel void scalarScaledAdd(const dlong N,
-                             const dfloat a,
-                             const dfloat b,
-                             @ restrict const dfloat *X,
-                             @ restrict dfloat *Y)
-{
-  for (dlong n = 0; n < N; ++n; @tile(256, @outer, @inner)) {
-    if (n < N) {
-      Y[n] = a + b * X[n];
-    }
-  }
-}
-
 void udfDirichlet(bcData *bc)
 {
   bc->sScalar = 0;
@@ -105,14 +92,25 @@ void userq(double time)
 
 void uservp(double time)
 {
-  auto mesh = nrs->meshV;
-  auto& scalar = nrs->scalar;
-
   RANSktau::updateProperties();
 
   if (dimRun){
     platform->linAlg->fill(mesh->Nlocal, rhoDim, nrs->fluid->o_rho); 
     platform->linAlg->fill(mesh->Nlocal, mueDim, nrs->fluid->o_mue);
+
+#if 0
+  auto mesh = nrs->meshV;
+  auto& scalar = nrs->scalar;
+  if (platform->verbose()) {
+    const dfloat debugNorm = platform->linAlg->weightedNorm2Many(mesh->Nlocal,
+                                                                 1,
+                                                                 nrs->fluid->fieldOffset,
+                                                                 mesh->ogs->o_invDegree,
+                                                                 o_mue_t,
+                                                                 platform->comm.mpiComm());
+    if (platform->comm.mpiRank() == 0) {
+      printf("mue_t norm: %.15e\n", debugNorm);
+    }                                   
   }
 }
 
@@ -168,7 +166,6 @@ void UDF_Setup()
   auto mesh = nrs->meshV;
 
   std::vector<dfloat> U(mesh->dim * nrs->fluid->fieldOffset, 0.0);
-  std::vector<dfloat> s0(mesh->Nlocal, 0.0);
   std::vector<dfloat> k(mesh->Nlocal, 0.0);
   std::vector<dfloat> tau(mesh->Nlocal, 0.0);
 
@@ -214,9 +211,6 @@ void UDF_Setup()
 void UDF_ExecuteStep(double time, int tstep)
 {
   if (ciMode) {
-    ciTestErrors(nrs, time, tstep);
-  }
-  if (nrs->checkpointStep) {
-    extractLine(nrs, time);
+    ciTestErrors(time, tstep);
   }
 }
