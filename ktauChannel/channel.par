@@ -36,4 +36,4 @@ boundaryTypeMap = udfDirichlet, zeroNeumann
 residualTol = 1e-08
 
 [CASEDATA]
-dimensional = False 
+dimensional = True 
